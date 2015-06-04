@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7229B5D1-8B24-4961-9104-796B6E0CCA20</string>
+	<key>IDESourceControlProjectName</key>
+	<string>XYRouter</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>CE32A1579F102856EA87EAB7BD79756C94FDA7A9</key>
+		<string>https://github.com/uxyheaven/XYRouter.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>XYRouter.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>CE32A1579F102856EA87EAB7BD79756C94FDA7A9</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/uxyheaven/XYRouter.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>CE32A1579F102856EA87EAB7BD79756C94FDA7A9</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>CE32A1579F102856EA87EAB7BD79756C94FDA7A9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>XYRouter</string>
+		</dict>
+	</array>
+</dict>
+</plist>

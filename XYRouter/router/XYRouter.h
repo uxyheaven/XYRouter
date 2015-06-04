@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+
 @protocol XYRouteProtocol <NSObject>
 
 - (void)gotoBack;     // 返回上一个
@@ -19,7 +20,8 @@
 
 @end
 
-typedef id (^XYRouterBlock)(NSString * key);
+
+typedef UIViewController *(^XYRouterBlock)();
 
 @interface XYRouter : NSObject
 
@@ -31,6 +33,18 @@ typedef id (^XYRouterBlock)(NSString * key);
 
 - (id)viewControllerForKey:(NSString *)key;
 
-- (void)openUrl:(NSString *)strUrl;
+//- (void)openUrl:(NSString *)strUrl;
+
+@end
+
+#pragma mark -
+@interface UIViewController (XYRouter)
+
+- (void)uxy_pushViewController:(UIViewController *)viewController
+                        params:(id)params
+                      animated:(BOOL)flag
+                    completion:(void (^)(void))completion;
+
+- (void)uxy_popViewControllerAnimated: (BOOL)flag completion: (void (^)(void))completion;
 
 @end

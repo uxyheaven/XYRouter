@@ -34,7 +34,7 @@
     
     [[XYRouter sharedInstance] mapKey:@"aaa" toControllerClassName:@"UIViewController"];
     
-    NSNumber *n = [NSNumber numberWithDouble: 1];
+    NSNumber *n = [NSNumber numberWithDouble:1];
 }
 
 - (void)didReceiveMemoryWarning {
