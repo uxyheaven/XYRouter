@@ -5,7 +5,11 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
+<<<<<<< HEAD
 	<string>7CEA8C11-5040-4A82-9AC3-930DD357A10F</string>
+=======
+	<string>7229B5D1-8B24-4961-9104-796B6E0CCA20</string>
+>>>>>>> origin/master
 	<key>IDESourceControlProjectName</key>
 	<string>XYRouter</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>

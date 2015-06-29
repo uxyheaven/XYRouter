@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57232DB11B0F341700A8FE39 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57232DB01B0F341700A8FE39 /* TableViewController.m */; };
 		57CF31ED1A6F9EC200F6A9AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF31EC1A6F9EC200F6A9AE /* main.m */; };
 		57CF31F01A6F9EC200F6A9AE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF31EF1A6F9EC200F6A9AE /* AppDelegate.m */; };
 		57CF31F31A6F9EC200F6A9AE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF31F21A6F9EC200F6A9AE /* ViewController.m */; };
@@ -15,6 +16,7 @@
 		57CF31FB1A6F9EC200F6A9AE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57CF31F91A6F9EC200F6A9AE /* LaunchScreen.xib */; };
 		57CF32071A6F9EC200F6A9AE /* XYRouterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF32061A6F9EC200F6A9AE /* XYRouterTests.m */; };
 		57CF32131A6F9EF600F6A9AE /* XYRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF32121A6F9EF600F6A9AE /* XYRouter.m */; };
+		57F57CC31B2025A7009F3145 /* TestVC1.m in Sources */ = {isa = PBXBuildFile; fileRef = 57F57CC21B2025A7009F3145 /* TestVC1.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		57232DAF1B0F341700A8FE39 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		57232DB01B0F341700A8FE39 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		57CF31E71A6F9EC200F6A9AE /* XYRouter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XYRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57CF31EB1A6F9EC200F6A9AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57CF31EC1A6F9EC200F6A9AE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -43,6 +47,8 @@
 		57CF32061A6F9EC200F6A9AE /* XYRouterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYRouterTests.m; sourceTree = "<group>"; };
 		57CF32111A6F9EF600F6A9AE /* XYRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYRouter.h; sourceTree = "<group>"; };
 		57CF32121A6F9EF600F6A9AE /* XYRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYRouter.m; sourceTree = "<group>"; };
+		57F57CC11B2025A7009F3145 /* TestVC1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC1.h; sourceTree = "<group>"; };
+		57F57CC21B2025A7009F3145 /* TestVC1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC1.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +95,10 @@
 				57CF31EF1A6F9EC200F6A9AE /* AppDelegate.m */,
 				57CF31F11A6F9EC200F6A9AE /* ViewController.h */,
 				57CF31F21A6F9EC200F6A9AE /* ViewController.m */,
+				57F57CC11B2025A7009F3145 /* TestVC1.h */,
+				57F57CC21B2025A7009F3145 /* TestVC1.m */,
+				57232DAF1B0F341700A8FE39 /* TableViewController.h */,
+				57232DB01B0F341700A8FE39 /* TableViewController.m */,
 				57CF31F41A6F9EC200F6A9AE /* Main.storyboard */,
 				57CF31F71A6F9EC200F6A9AE /* Images.xcassets */,
 				57CF31F91A6F9EC200F6A9AE /* LaunchScreen.xib */,
@@ -232,9 +242,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57F57CC31B2025A7009F3145 /* TestVC1.m in Sources */,
 				57CF31F31A6F9EC200F6A9AE /* ViewController.m in Sources */,
 				57CF31F01A6F9EC200F6A9AE /* AppDelegate.m in Sources */,
 				57CF31ED1A6F9EC200F6A9AE /* main.m in Sources */,
+				57232DB11B0F341700A8FE39 /* TableViewController.m in Sources */,
 				57CF32131A6F9EF600F6A9AE /* XYRouter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -426,6 +438,7 @@
 				57CF320C1A6F9EC200F6A9AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		57CF320D1A6F9EC200F6A9AE /* Build configuration list for PBXNativeTarget "XYRouterTests" */ = {
 			isa = XCConfigurationList;
@@ -434,6 +447,7 @@
 				57CF320F1A6F9EC200F6A9AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
