@@ -9,12 +9,7 @@
 #import "XYRouter.h"
 #import <objc/runtime.h>
 
-typedef enum
-{
-    XYRouteType_current,      // 当前目录         : 空 ./
-    XYRouteType_back,         // 上一个目录       : ../
-    XYRouteType_root,         // 根目录          : /
-}XYRouteType;
+
 
 @interface XYRouter ()
 
@@ -45,6 +40,7 @@ typedef enum
     self = [super init];
     if (self) {
         _map = [@{} mutableCopy];
+        _currentRoute = @"";
     }
     return self;
 }
@@ -127,12 +123,16 @@ typedef enum
     NSArray *components = [url pathComponents];
     NSLog(@"%@", components);
     
+    // 设置当前的url
+    XYRouteType type = [self routeTypeByComponent:strUrl];
+    
+    
     for (int i = 0; i < components.count; i++)
     {
         NSString *route = components[i];
-        XYRouteType type = [self routeTypeByComponent:route];
+        XYRouteType tmpType = [self routeTypeByComponent:route];
         
-        if (XYRouteType_back == type)
+        if (XYRouteUrlType_back == tmpType)
         {
             if ([_currentViewRoute respondsToSelector:@selector(gotoBack)])
             {
@@ -141,7 +141,7 @@ typedef enum
             [_currentViewRoute dismissViewControllerAnimated:NO completion:nil];
             [_currentViewRoute.navigationController popViewControllerAnimated:NO];
         }
-        else if (XYRouteType_root == type)
+        else if (XYRouteUrlType_root == tmpType)
         {
             //[UIWebView class];
             if ([_currentViewRoute respondsToSelector:@selector(gotoRoot)])
@@ -149,7 +149,7 @@ typedef enum
                 [_currentViewRoute gotoBack];
             }
         }
-        else if (XYRouteType_current == type)
+        else if (XYRouteUrlType_current == tmpType)
         {
             
         }
@@ -163,18 +163,18 @@ typedef enum
 {
     if ([@"./" isEqualToString:component])
     {
-        return XYRouteType_current;
+        return XYRouteUrlType_current;
     }
     else if ([@"../" isEqualToString:component])
     {
-        return XYRouteType_back;
+        return XYRouteUrlType_back;
     }
     else if ([@"/" isEqualToString:component])
     {
-        return XYRouteType_root;
+        return XYRouteUrlType_root;
     }
     
-    return XYRouteType_current;
+    return XYRouteUrlType_current;
 }
 
 - (void)executeRoute

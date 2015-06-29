@@ -9,6 +9,20 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+/* todo
+ * 1 懒加载
+ * 2 内存释放
+ * 3 openUrl
+ */
+
+typedef enum
+{
+    XYRouteUrlType_current,      // 当前目录         : ./
+    XYRouteUrlType_back,         // 上一个目录       : ../
+    XYRouteUrlType_root,         // 根目录          : /
+  //  XYRouteUrlType_new,          // 新目录          : 空
+}XYRouteType;
+
 @protocol XYRouteProtocol <NSObject>
 
 - (void)gotoBack;     // 返回上一个
@@ -23,7 +37,10 @@ typedef id (^XYRouterBlock)(NSString * key);
 
 @interface XYRouter : NSObject
 
+@property (nonatomic, copy) NSString *currentUrl;
+
 + (instancetype)sharedInstance;
+
 
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className;
 - (void)mapKey:(NSString *)key toControllerInstance:(UIViewController *)viewController;
