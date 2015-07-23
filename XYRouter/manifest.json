@@ -1,0 +1,17 @@
+{
+	"application" :
+	{
+		"routes" :
+		{
+			"/"			: "TableViewController",
+			"/index"	: "TableViewController",
+			"/photo"	: "TestVC1",
+			"/shot"		: "TestVC2",
+		},
+
+		"main" : "/"
+	},
+	"permissions" :
+	{
+	}
+}

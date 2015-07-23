@@ -61,6 +61,7 @@ typedef UIViewController *(^XYRouterBlock)();
                       animated:(BOOL)flag
                     completion:(void (^)(void))completion;
 
-- (void)uxy_popViewControllerAnimated: (BOOL)flag completion: (void (^)(void))completion;
+- (void)uxy_popViewControllerAnimated:(BOOL)flag
+                           completion:(void (^)(void))completion;
 
 @end

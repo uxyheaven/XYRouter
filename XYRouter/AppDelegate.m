@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "XYRouter.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,21 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    NSString *manifestPath = [[NSBundle mainBundle] pathForResource:@"manifest" ofType:@"json"];
+    NSData *manifestData = [[NSString stringWithContentsOfFile:manifestPath encoding:NSUTF8StringEncoding error:NULL] dataUsingEncoding:NSUTF8StringEncoding];;
+    NSDictionary *manifest = [NSJSONSerialization JSONObjectWithData:manifestData options:NSJSONReadingAllowFragments error:nil];
+    NSDictionary *applicationRoutes = [manifest valueForKeyPath:@"application.routes"];
+    NSString *applicationMain = [manifest valueForKeyPath:@"application.main"];
+    NSLog(@"%@",applicationRoutes);
+    [applicationRoutes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [[XYRouter sharedInstance] mapKey:key toControllerClassName:obj];
+    }];
+    
+    UIViewController *vc = [[XYRouter sharedInstance] viewControllerForKey:applicationMain];
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    self.window.rootViewController = nvc;
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 

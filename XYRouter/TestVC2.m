@@ -1,25 +1,24 @@
 //
-//  TestVC1.m
+//  TestVC2.m
 //  XYRouter
 //
-//  Created by heaven on 15/6/4.
+//  Created by heaven on 15/7/23.
 //  Copyright (c) 2015年 heaven. All rights reserved.
 //
 
-#import "TestVC1.h"
+#import "TestVC2.h"
 #import "XYRouter.h"
 
-@interface TestVC1 ()
+@interface TestVC2 ()
 
 @end
 
-@implementation TestVC1
+@implementation TestVC2
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    //self.view.backgroundColor = [UIColor lightGrayColor];
-    self.title = @"TestVC1";
+    self.title = @"TestVC2";
     
     UILabel *label = [[UILabel alloc] init];
     label.frame = CGRectMake(0, 200, 200, 50);
@@ -47,7 +46,6 @@
     // Pass the selected object to the new view controller.
 }
 */
-
 - (void)back
 {
     [self uxy_popViewControllerAnimated:YES completion:nil];
