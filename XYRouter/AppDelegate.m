@@ -31,6 +31,7 @@
     UIViewController *vc = [[XYRouter sharedInstance] viewControllerForKey:applicationMain];
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     nvc.navigationBar.backgroundColor = [UIColor blueColor];
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.rootViewController = nvc;
     [self.window makeKeyAndVisible];
     

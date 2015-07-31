@@ -139,13 +139,12 @@
     // 设置当前的url
     XYRouteType type = [self routeTypeByComponent:strUrl];
     
-    
     for (int i = 0; i < components.count; i++)
     {
         NSString *route = components[i];
         XYRouteType tmpType = [self routeTypeByComponent:route];
         
-        if (XYRouteUrlType_back == tmpType)
+        if (XYRouteUrlType_pushAfterPop == tmpType)
         {
             if ([_currentViewRoute respondsToSelector:@selector(gotoBack)])
             {
@@ -154,7 +153,7 @@
             [_currentViewRoute dismissViewControllerAnimated:NO completion:nil];
             [_currentViewRoute.navigationController popViewControllerAnimated:NO];
         }
-        else if (XYRouteUrlType_root == tmpType)
+        else if (XYRouteUrlType_pushAfterGotoRoot == tmpType)
         {
             //[UIWebView class];
             if ([_currentViewRoute respondsToSelector:@selector(gotoRoot)])
@@ -162,30 +161,85 @@
                 [_currentViewRoute gotoBack];
             }
         }
-        else if (XYRouteUrlType_current == tmpType)
+        else if (XYRouteUrlType_push == tmpType)
         {
             
         }
     }
 }
 
+- (void)openUrl:(NSString *)strUrl atNavigationController:(UINavigationController *)navigationController
+{
+    NSURL *url = [NSURL URLWithString:strUrl];
+    NSLog(@"%@", url);
+    
+    NSArray *components = [url pathComponents];
+    NSLog(@"%@", components);
+    
+    // 先看需求pop一些vc
+    XYRouteType type = [self routeTypeByComponent:components[0]];
+    if (type == XYRouteUrlType_push)
+    {
+    }
+    else if (type == XYRouteUrlType_pushAfterPop)
+    {
+        [navigationController popViewControllerAnimated:NO];
+    }
+    else if (type == XYRouteUrlType_pushAfterGotoRoot)
+    {
+        [navigationController popToRootViewControllerAnimated:NO];
+    }
+    
+    // 只有一个直接push
+    if (components.count == 1)
+    {
+        UIViewController *vc = [self viewControllerForKey:[components lastObject]];
+        if ([vc isKindOfClass:[UINavigationController class]])
+        {
+            vc = ((UINavigationController *)vc).topViewController;
+        }
+        [navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    
+    
+    // 无动画push中间的vc
+    for (int i = 0; i < components.count - 1; i++) {
+        UIViewController *vc = [self viewControllerForKey:components[i]];
+        if ([vc isKindOfClass:[UINavigationController class]])
+        {
+            vc = ((UINavigationController *)vc).topViewController;
+        }
+        [navigationController pushViewController:vc animated:NO];
+    }
+    
+    // push最后的vc
+    UIViewController *vc = [self viewControllerForKey:[components lastObject]];
+    if ([vc isKindOfClass:[UINavigationController class]])
+    {
+        vc = ((UINavigationController *)vc).topViewController;
+    }
+    [navigationController pushViewController:vc animated:YES];
+
+    
+}
 #pragma mark - private
 - (XYRouteType)routeTypeByComponent:(NSString *)component
 {
-    if ([@"./" isEqualToString:component])
+    if ([@"." isEqualToString:component])
     {
-        return XYRouteUrlType_current;
+        return XYRouteUrlType_push;
     }
-    else if ([@"../" isEqualToString:component])
+    else if ([@".." isEqualToString:component])
     {
-        return XYRouteUrlType_back;
+        return XYRouteUrlType_pushAfterPop;
     }
     else if ([@"/" isEqualToString:component])
     {
-        return XYRouteUrlType_root;
+        return XYRouteUrlType_pushAfterGotoRoot;
     }
     
-    return XYRouteUrlType_current;
+    return XYRouteUrlType_push;
 }
 
 - (void)executeRoute
@@ -235,6 +289,17 @@
 - (void)uxy_goBack
 {
     [self uxy_popViewControllerAnimated:YES completion:nil];
+}
+
+- (void)uxy_pushViewController:(UIViewController *)viewController
+                        params:(id)params
+                      animated:(BOOL)flag
+{
+    if (viewController.navigationController &&
+        (viewController.navigationController != self))
+    {
+        [viewController.navigationController popViewControllerAnimated:NO];
+    }
 }
 @end
 

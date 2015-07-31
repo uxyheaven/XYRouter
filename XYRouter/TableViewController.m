@@ -14,7 +14,7 @@
 @end
 
 @implementation TableViewController
-
+/*
 + (instancetype)sharedInstance
 {
     static TableViewController *vc = nil;
@@ -27,7 +27,7 @@
     });
     return vc;
 }
-
+*/
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -41,8 +41,13 @@
     self.title = @"tableView";
     
     _list = @[
-              @{ @"title" : @"vc1" , @"key" : @"aa"},
-              @{ @"title" : @"vc2" , @"key" : @"bb"}
+              @{ @"title" : @"./TestVC1" , @"url" : @"./TestVC1"},
+              @{ @"title" : @"../TestVC1" , @"url" : @"../TestVC1"},
+              @{ @"title" : @"/TestVC1" , @"url" : @"/TestVC1"},
+              @{ @"title" : @"TestVC1" , @"url" : @"TestVC1"},
+              @{ @"title" : @"./TestVC1/TestVC2" , @"url" : @"./TestVC1/TestVC2"},
+              @{ @"title" : @"./TestVC2/TestVC1" , @"url" : @"./TestVC2/TestVC1"},
+              @{ @"title" : @"TestVC2/TestVC1/TestVC2" , @"url" : @"TestVC2/TestVC1/TestVC2"}
               ];
     
     self.tableView.delegate = self;
@@ -76,23 +81,13 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *key = _list[indexPath.row][@"key"];
-    UIViewController *vc = [[XYRouter sharedInstance] viewControllerForKey:key];
-    if (!vc)
+    NSString *url = _list[indexPath.row][@"url"];
+    if (url.length > 0)
     {
-        return;
+        [[XYRouter sharedInstance] openUrl:url atNavigationController:self.navigationController];
     }
     
-    NSString *type = _list[indexPath.row][@"type"];
-    
-    if ([type isEqualToString:@"nav"])
-    {
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else
-    {
-        [self uxy_pushViewController:vc params:nil animated:YES completion:nil];
-    }
+    // [self uxy_pushViewController:vc params:nil animated:YES completion:nil];
 }
 /*
 // Override to support conditional editing of the table view.

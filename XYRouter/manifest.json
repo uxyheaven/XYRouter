@@ -4,9 +4,9 @@
 		"routes" :
 		{
 			"/"			: "TableViewController",
-			"/index"	: "TableViewController",
-			"/photo"	: "TestVC1",
-			"/shot"		: "TestVC2",
+			"index"	: "TableViewController",
+			"TestVC1"       : "TableViewController",
+			"TestVC2"		: "TestVC2",
 		},
 
 		"main" : "/"

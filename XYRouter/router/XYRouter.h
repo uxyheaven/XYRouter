@@ -17,10 +17,10 @@
 
 typedef enum
 {
-    XYRouteUrlType_current,      // 当前目录         : ./
-    XYRouteUrlType_back,         // 上一个目录       : ../
-    XYRouteUrlType_root,         // 根目录          : /
-  //  XYRouteUrlType_new,          // 新目录          : 空
+    XYRouteUrlType_push,                        // 在当前目录push               : ./
+    XYRouteUrlType_pushAfterPop,                // 在上一个目录push             : ../
+    XYRouteUrlType_pushAfterGotoRoot,           // 在根目录根push               : /
+    // XYRouteUrlType_push,                     // 在当前目录push                : 空
 }XYRouteType;
 
 @protocol XYRouteProtocol <NSObject>
@@ -55,7 +55,7 @@ typedef UIViewController *(^XYRouterBlock)();
 
 - (id)viewControllerForKey:(NSString *)key;
 
-//- (void)openUrl:(NSString *)strUrl;
+- (void)openUrl:(NSString *)strUrl atNavigationController:(UINavigationController *)navigationController;
 
 @end
 
@@ -72,5 +72,9 @@ typedef UIViewController *(^XYRouterBlock)();
 
 - (void)uxy_openUrl:(NSString *)url;
 - (void)uxy_goBack;
+
+- (void)uxy_pushViewController:(UIViewController *)viewController
+                        params:(id)params
+                      animated:(BOOL)flag;
 
 @end
