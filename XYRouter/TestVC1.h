@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XYRouter.h"
 
-@interface TestVC1 : UIViewController
+@interface TestVC1 : UIViewController<XYRouteViewControllerProtocol>
+
++ (UIViewController *)uxy_showedViewController;
 
 @end

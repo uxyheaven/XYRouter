@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		57232DB11B0F341700A8FE39 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57232DB01B0F341700A8FE39 /* TableViewController.m */; };
+		577653871B6713CA00E39BC4 /* XYTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 577653861B6713CA00E39BC4 /* XYTransitioning.m */; };
 		57CF31ED1A6F9EC200F6A9AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF31EC1A6F9EC200F6A9AE /* main.m */; };
 		57CF31F01A6F9EC200F6A9AE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF31EF1A6F9EC200F6A9AE /* AppDelegate.m */; };
 		57CF31F31A6F9EC200F6A9AE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF31F21A6F9EC200F6A9AE /* ViewController.m */; };
@@ -33,6 +34,8 @@
 /* Begin PBXFileReference section */
 		57232DAF1B0F341700A8FE39 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		57232DB01B0F341700A8FE39 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		577653851B6713CA00E39BC4 /* XYTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYTransitioning.h; sourceTree = "<group>"; };
+		577653861B6713CA00E39BC4 /* XYTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYTransitioning.m; sourceTree = "<group>"; };
 		57CF31E71A6F9EC200F6A9AE /* XYRouter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XYRouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57CF31EB1A6F9EC200F6A9AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57CF31EC1A6F9EC200F6A9AE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -143,6 +146,8 @@
 			children = (
 				57CF32111A6F9EF600F6A9AE /* XYRouter.h */,
 				57CF32121A6F9EF600F6A9AE /* XYRouter.m */,
+				577653851B6713CA00E39BC4 /* XYTransitioning.h */,
+				577653861B6713CA00E39BC4 /* XYTransitioning.m */,
 			);
 			path = router;
 			sourceTree = "<group>";
@@ -253,6 +258,7 @@
 				57CF31ED1A6F9EC200F6A9AE /* main.m in Sources */,
 				57232DB11B0F341700A8FE39 /* TableViewController.m in Sources */,
 				57ECC8A51B60C5B5001F4B2B /* TestVC2.m in Sources */,
+				577653871B6713CA00E39BC4 /* XYTransitioning.m in Sources */,
 				57CF32131A6F9EF600F6A9AE /* XYRouter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -15,11 +15,19 @@
 
 @implementation TestVC1
 
++ (UIViewController *)uxy_showedViewController
+{
+    UIViewController *vc = [[self alloc] init];
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    return nvc;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    //self.view.backgroundColor = [UIColor lightGrayColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"TestVC1";
+    self.navigationController.navigationBar.backgroundColor = [UIColor redColor];
     
     UILabel *label = [[UILabel alloc] init];
     label.frame = CGRectMake(0, 200, 200, 50);
@@ -29,6 +37,7 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(0, 250, 200, 50);
     [btn setTitle:@"back" forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
 }

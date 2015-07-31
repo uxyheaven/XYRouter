@@ -15,6 +15,19 @@
 
 @implementation TableViewController
 
++ (instancetype)sharedInstance
+{
+    static TableViewController *vc = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        if (!vc) {
+            vc = [[self alloc] init];
+        }
+    });
+    return vc;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -28,8 +41,8 @@
     self.title = @"tableView";
     
     _list = @[
-              @{ @"title" : @"nav" , @"key" : @"aa", @"type" : @"nav"},
-              @{ @"title" : @"vc1" , @"key" : @"bb"}
+              @{ @"title" : @"vc1" , @"key" : @"aa"},
+              @{ @"title" : @"vc2" , @"key" : @"bb"}
               ];
     
     self.tableView.delegate = self;

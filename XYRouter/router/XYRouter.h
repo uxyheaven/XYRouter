@@ -33,12 +33,18 @@ typedef enum
 
 @end
 
+@protocol XYRouteViewControllerProtocol <NSObject>
+
++ (UIViewController *)uxy_showedViewController;
+
+@end
+
 
 typedef UIViewController *(^XYRouterBlock)();
 
 @interface XYRouter : NSObject
 
-@property (nonatomic, copy) NSString *currentUrl;
+@property (nonatomic, copy, readonly) NSString *currentUrl;
 
 + (instancetype)sharedInstance;
 
@@ -59,9 +65,12 @@ typedef UIViewController *(^XYRouterBlock)();
 - (void)uxy_pushViewController:(UIViewController *)viewController
                         params:(id)params
                       animated:(BOOL)flag
-                    completion:(void (^)(void))completion;
+                    completion:(void (^)(id viewController))completion;
 
 - (void)uxy_popViewControllerAnimated:(BOOL)flag
                            completion:(void (^)(void))completion;
+
+- (void)uxy_openUrl:(NSString *)url;
+- (void)uxy_goBack;
 
 @end
