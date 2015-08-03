@@ -41,14 +41,17 @@
     self.title = @"tableView";
     
     _list = @[
-              @{ @"title" : @"./TableVC"},
-              @{ @"title" : @"../TableVC"},
-              @{ @"title" : @"/TableVC"},
-              @{ @"title" : @"TableVC"},
-              @{ @"title" : @"./TableVC/TestVC1"},
-              @{ @"title" : @"./TestVC1/TableVC"},
-              @{ @"title" : @"TestVC1/TableVC/TestVC1"},
-              @{ @"title" : @"TestVC1?i=1&str=b"}
+              @{@"title" : @"./TableVC"},
+              @{@"title" : @"../TableVC"},
+              @{@"title" : @"/TableVC"},
+              @{@"title" : @"TableVC"},
+              @{@"title" : @"./TableVC/TestVC1"},
+              @{@"title" : @"./TestVC1/TableVC"},
+              @{@"title" : @"../"},
+              @{@"title" : @"/"},
+              @{@"title" : @"TestVC1/TableVC/TestVC1"},
+              @{@"title" : @"TestVC1?i=1&str=b"},
+              @{@"title" : @"router://TestVC1"}
               ];
     
     self.tableView.delegate = self;

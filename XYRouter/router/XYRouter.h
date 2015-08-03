@@ -17,6 +17,7 @@
 
 typedef enum
 {
+    XYRouteUrlType_invalid,                     // 无效
     XYRouteUrlType_push,                        // 在当前目录push               : ./
     XYRouteUrlType_pushAfterPop,                // 在上一个目录push             : ../
     XYRouteUrlType_pushAfterGotoRoot,           // 在根目录根push               : /

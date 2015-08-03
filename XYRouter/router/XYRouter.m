@@ -143,29 +143,21 @@
 - (void)openPath:(NSString *)path atNavigationController:(UINavigationController *)navigationController
 {
     NSURL *url = [NSURL URLWithString:path];
-    NSLog(@"%@", url);
     
     NSArray *components = [url pathComponents];
-    NSLog(@"%@", components);
     
     NSDictionary *queryDictonary = [self __dictionaryFromQuery:url.query];
-    NSLog(@"%@", queryDictonary);
     
+    NSString *scheme = url.scheme;
+    
+    NSString *host = url.host;
+    // 处理host改变的情况
+    [self __handleHost:host];
+
     // 先看需求pop一些vc
-    XYRouteType type = [self routeTypeByComponent:components[0]];
-    if (type == XYRouteUrlType_push)
-    {
-    }
-    else if (type == XYRouteUrlType_pushAfterPop)
-    {
-        [navigationController popViewControllerAnimated:NO];
-    }
-    else if (type == XYRouteUrlType_pushAfterGotoRoot)
-    {
-        [navigationController popToRootViewControllerAnimated:NO];
-    }
+    [self __handlePopViewControllerByComponents:components atNavigationController:navigationController];
     
-    // 只有一个直接push
+    // 只有一个路径直接push
     if (components.count == 1)
     {
         UIViewController *vc = [self viewControllerForKey:[components lastObject]];
@@ -177,23 +169,30 @@
         return;
     }
     
-    // 无动画push中间的vc
-    for (int i = 0; i < components.count - 1; i++) {
-        UIViewController *vc = [self viewControllerForKey:components[i]];
+    // 多个路径先无动画push中间的vc, 最后在push最后的vc
+    if (components.count > 1)
+    {
+        for (NSInteger i = 0; i < components.count - 1; i++) {
+            if ([components[i] isEqualToString:@"."] ||
+                [components[i] isEqualToString:@".."]
+                )
+                continue;
+            UIViewController *vc = [self viewControllerForKey:components[i]];
+            if ([vc isKindOfClass:[UINavigationController class]])
+            {
+                vc = ((UINavigationController *)vc).topViewController;
+            }
+            [self __pushViewController:vc parameters:nil atNavigationController:navigationController animated:NO];
+        }
+        
+        UIViewController *vc = [self viewControllerForKey:[components lastObject]];
         if ([vc isKindOfClass:[UINavigationController class]])
         {
             vc = ((UINavigationController *)vc).topViewController;
         }
-        [navigationController pushViewController:vc animated:NO];
+        [self __pushViewController:vc parameters:queryDictonary atNavigationController:navigationController animated:YES];
+        return;
     }
-    
-    // push最后的vc
-    UIViewController *vc = [self viewControllerForKey:[components lastObject]];
-    if ([vc isKindOfClass:[UINavigationController class]])
-    {
-        vc = ((UINavigationController *)vc).topViewController;
-    }
-    [self __pushViewController:vc parameters:queryDictonary atNavigationController:navigationController animated:YES];;
 }
 
 + (UINavigationController *)topNavigationController
@@ -219,8 +218,43 @@
     return XYRouteUrlType_push;
 }
 
+// 处理host改变的情况
+- (void)__handleHost:(NSString *)host
+{
+    if (host.length > 0)
+    {
+        UIViewController *vc = [self viewControllerForKey:host];
+        self.rootViewController = vc;
+    }
+}
+
+// 先看需求pop一些vc
+- (void)__handlePopViewControllerByComponents:(NSArray *)components atNavigationController:(UINavigationController *)navigationController
+{
+    XYRouteType type = [self routeTypeByComponent:[components firstObject]];
+    BOOL animated = NO;
+    if (components.count == 1 &&
+        ([components[0] isEqualToString:@".."] || [components[0] isEqualToString:@"/"]))
+    {
+        animated = YES;
+    }
+    
+    if (type == XYRouteUrlType_push)
+    {
+    }
+    else if (type == XYRouteUrlType_pushAfterPop)
+    {
+        [navigationController popViewControllerAnimated:animated];
+    }
+    else if (type == XYRouteUrlType_pushAfterGotoRoot)
+    {
+        [navigationController popToRootViewControllerAnimated:animated];
+    }
+}
 - (void)__pushViewController:(UIViewController *)viewController parameters:(NSDictionary *)parameters atNavigationController:(UINavigationController *)navigationController animated:(BOOL)animated
 {
+    if (viewController == nil || navigationController == nil) return;
+    
     [navigationController pushViewController:viewController animated:animated];
     [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         // todo 安全性检查

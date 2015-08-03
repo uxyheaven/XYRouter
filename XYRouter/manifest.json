@@ -3,14 +3,13 @@
 	{
 		"routes" :
 		{
-			"/"             : "TableViewController",
 			"index"         : "TableViewController",
 			"TableVC"       : "TableViewController",
 			"TestVC1"		: "TestVC1",
             "TestVC2"		: "TestVC2",
 		},
 
-		"main" : "/"
+		"main" : "index"
 	},
 	"permissions" :
 	{
