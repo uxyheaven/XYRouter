@@ -50,7 +50,7 @@
               @{@"title" : @"../"},
               @{@"title" : @"/"},
               @{@"title" : @"TestVC1/TableVC/TestVC1"},
-              @{@"title" : @"TestVC1?i=1&str=b"},
+              @{@"title" : @"TestVC1?str1=a&str2=2&i=1"},
               @{@"title" : @"router://TestVC1"}
               ];
     
