@@ -10,7 +10,11 @@
 #import <objc/runtime.h>
 #import "XYTransitioning.h"
 
-
+#pragma mark - XYRouter_private
+@interface NSString (XYRouter_private)
+- (NSMutableDictionary *)__uxy_dictionaryFromQueryComponents;
+@end
+#pragma mark
 @interface XYRouter ()
 
 @property (nonatomic, strong) NSMutableDictionary *map;
@@ -42,11 +46,20 @@
     if (self) {
         _map = [@{} mutableCopy];
         _currentRoute = @"";
-        _transitioning = [[XYTransitioning alloc] init];
+        //_transitioning = [[XYTransitioning alloc] init];
     }
     return self;
 }
 
+- (void)setRootViewController:(UIViewController *)rootViewController
+{
+    if (_rootViewController != rootViewController)
+    {
+        [UIApplication sharedApplication].delegate.window.rootViewController = rootViewController;
+        [[UIApplication sharedApplication].delegate.window makeKeyAndVisible];
+        _rootViewController = rootViewController;
+    }
+}
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className
 {
     if (key.length == 0)
@@ -127,54 +140,16 @@
     return vc;
 }
 
-
-- (void)openUrl:(NSString *)strUrl
+- (void)openPath:(NSString *)path atNavigationController:(UINavigationController *)navigationController
 {
-    NSURL *url = [NSURL URLWithString:strUrl];
+    NSURL *url = [NSURL URLWithString:path];
     NSLog(@"%@", url);
     
     NSArray *components = [url pathComponents];
     NSLog(@"%@", components);
     
-    // 设置当前的url
-    XYRouteType type = [self routeTypeByComponent:strUrl];
-    
-    for (int i = 0; i < components.count; i++)
-    {
-        NSString *route = components[i];
-        XYRouteType tmpType = [self routeTypeByComponent:route];
-        
-        if (XYRouteUrlType_pushAfterPop == tmpType)
-        {
-            if ([_currentViewRoute respondsToSelector:@selector(gotoBack)])
-            {
-                [_currentViewRoute gotoBack];
-            }
-            [_currentViewRoute dismissViewControllerAnimated:NO completion:nil];
-            [_currentViewRoute.navigationController popViewControllerAnimated:NO];
-        }
-        else if (XYRouteUrlType_pushAfterGotoRoot == tmpType)
-        {
-            //[UIWebView class];
-            if ([_currentViewRoute respondsToSelector:@selector(gotoRoot)])
-            {
-                [_currentViewRoute gotoBack];
-            }
-        }
-        else if (XYRouteUrlType_push == tmpType)
-        {
-            
-        }
-    }
-}
-
-- (void)openUrl:(NSString *)strUrl atNavigationController:(UINavigationController *)navigationController
-{
-    NSURL *url = [NSURL URLWithString:strUrl];
-    NSLog(@"%@", url);
-    
-    NSArray *components = [url pathComponents];
-    NSLog(@"%@", components);
+    NSDictionary *queryDictonary = [self __dictionaryFromQuery:url.query];
+    NSLog(@"%@", queryDictonary);
     
     // 先看需求pop一些vc
     XYRouteType type = [self routeTypeByComponent:components[0]];
@@ -198,10 +173,9 @@
         {
             vc = ((UINavigationController *)vc).topViewController;
         }
-        [navigationController pushViewController:vc animated:YES];
+        [self __pushViewController:vc parameters:queryDictonary atNavigationController:navigationController animated:YES];
         return;
     }
-    
     
     // 无动画push中间的vc
     for (int i = 0; i < components.count - 1; i++) {
@@ -219,9 +193,12 @@
     {
         vc = ((UINavigationController *)vc).topViewController;
     }
-    [navigationController pushViewController:vc animated:YES];
+    [self __pushViewController:vc parameters:queryDictonary atNavigationController:navigationController animated:YES];;
+}
 
-    
++ (UINavigationController *)topNavigationController
+{
+    return nil;
 }
 #pragma mark - private
 - (XYRouteType)routeTypeByComponent:(NSString *)component
@@ -242,11 +219,41 @@
     return XYRouteUrlType_push;
 }
 
-- (void)executeRoute
+- (void)__pushViewController:(UIViewController *)viewController parameters:(NSDictionary *)parameters atNavigationController:(UINavigationController *)navigationController animated:(BOOL)animated
 {
-    
+    [navigationController pushViewController:viewController animated:animated];
+    [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        // todo 安全性检查
+        [viewController setValue:obj forKey:key];
+    }];
 }
 
+- (NSString *)__URLDecodingWithEncodingString:(NSString *)encodingString
+{
+    NSMutableString *string = [NSMutableString stringWithString:encodingString];
+    [string replaceOccurrencesOfString:@"+"
+                            withString:@" "
+                               options:NSLiteralSearch
+                                 range:NSMakeRange(0, [string length])];
+    return [string stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
+- (NSDictionary *)__dictionaryFromQuery:(NSString *)query
+{
+    NSMutableDictionary *result = [@{} mutableCopy];
+    NSArray *array = [query componentsSeparatedByString:@"&"];
+    for (NSString *keyValuePairString in array)
+    {
+        NSArray *keyValuePairArray = [keyValuePairString componentsSeparatedByString:@"="];
+        if ([keyValuePairArray count] < 2) continue;
+        
+        NSString *key = [self __URLDecodingWithEncodingString:keyValuePairArray[0]];
+        NSString *value = [self __URLDecodingWithEncodingString:keyValuePairArray[1]];
+        result[key]= value;
+    }
+    
+    return result;
+}
 @end
 
 #pragma mark -
@@ -291,16 +298,40 @@
     [self uxy_popViewControllerAnimated:YES completion:nil];
 }
 
-- (void)uxy_pushViewController:(UIViewController *)viewController
-                        params:(id)params
-                      animated:(BOOL)flag
-{
-    if (viewController.navigationController &&
-        (viewController.navigationController != self))
-    {
-        [viewController.navigationController popViewControllerAnimated:NO];
-    }
-}
 @end
 
+#pragma mark - XYRouter_private
+/*
+@implementation NSString (XYRouter_private)
 
+- (NSString *)__uxy_URLDecoding
+{
+    NSMutableString *string = [NSMutableString stringWithString:self];
+    [string replaceOccurrencesOfString:@"+"
+                            withString:@" "
+                               options:NSLiteralSearch
+                                 range:NSMakeRange(0, [string length])];
+    return [string stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
+- (NSMutableDictionary *)__uxy_dictionaryFromQueryComponents
+{
+    NSMutableDictionary *queryComponents = [NSMutableDictionary dictionary];
+    for (NSString *keyValuePairString in [self componentsSeparatedByString:@"&"])
+    {
+        NSArray *keyValuePairArray = [keyValuePairString componentsSeparatedByString:@"="];
+        if ([keyValuePairArray count] < 2) continue;
+        NSString *key = [[keyValuePairArray objectAtIndex:0] __uxy_URLDecoding];
+        NSString *value = [[keyValuePairArray objectAtIndex:1] __uxy_URLDecoding];
+        NSMutableArray *results = [queryComponents objectForKey:key];
+        if(!results)
+        {
+            results = [NSMutableArray arrayWithCapacity:1];
+            [queryComponents setObject:results forKey:key];
+        }
+        [results addObject:value];
+    }
+    return queryComponents;
+}
+@end
+*/

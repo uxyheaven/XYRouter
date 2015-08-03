@@ -41,13 +41,14 @@
     self.title = @"tableView";
     
     _list = @[
-              @{ @"title" : @"./TestVC1" , @"url" : @"./TestVC1"},
-              @{ @"title" : @"../TestVC1" , @"url" : @"../TestVC1"},
-              @{ @"title" : @"/TestVC1" , @"url" : @"/TestVC1"},
-              @{ @"title" : @"TestVC1" , @"url" : @"TestVC1"},
-              @{ @"title" : @"./TestVC1/TestVC2" , @"url" : @"./TestVC1/TestVC2"},
-              @{ @"title" : @"./TestVC2/TestVC1" , @"url" : @"./TestVC2/TestVC1"},
-              @{ @"title" : @"TestVC2/TestVC1/TestVC2" , @"url" : @"TestVC2/TestVC1/TestVC2"}
+              @{ @"title" : @"./TableVC"},
+              @{ @"title" : @"../TableVC"},
+              @{ @"title" : @"/TableVC"},
+              @{ @"title" : @"TableVC"},
+              @{ @"title" : @"./TableVC/TestVC1"},
+              @{ @"title" : @"./TestVC1/TableVC"},
+              @{ @"title" : @"TestVC1/TableVC/TestVC1"},
+              @{ @"title" : @"TestVC1?i=1&str=b"}
               ];
     
     self.tableView.delegate = self;
@@ -81,10 +82,10 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *url = _list[indexPath.row][@"url"];
+    NSString *url = _list[indexPath.row][@"url"] ?: _list[indexPath.row][@"title"];
     if (url.length > 0)
     {
-        [[XYRouter sharedInstance] openUrl:url atNavigationController:self.navigationController];
+        [[XYRouter sharedInstance] openPath:url atNavigationController:self.navigationController];
     }
     
     // [self uxy_pushViewController:vc params:nil animated:YES completion:nil];
@@ -135,7 +136,7 @@
 #pragma mark-
 - (void)registerViewControllers
 {
-    [[XYRouter sharedInstance] mapKey:@"aa" toControllerClassName:@"TestVC1"];
-    [[XYRouter sharedInstance] mapKey:@"bb" toControllerClassName:@"TestVC1"];
+    [[XYRouter sharedInstance] mapKey:@"aa" toControllerClassName:@"TableVC"];
+    [[XYRouter sharedInstance] mapKey:@"bb" toControllerClassName:@"TableVC"];
 }
 @end

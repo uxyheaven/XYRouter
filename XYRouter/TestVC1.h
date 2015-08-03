@@ -11,6 +11,9 @@
 
 @interface TestVC1 : UIViewController<XYRouteViewControllerProtocol>
 
+@property (nonatomic, assign) NSInteger i;
+@property (nonatomic, copy) NSString *str;
+
 + (UIViewController *)uxy_showedViewController;
 
 @end

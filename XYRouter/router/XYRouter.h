@@ -20,16 +20,10 @@ typedef enum
     XYRouteUrlType_push,                        // 在当前目录push               : ./
     XYRouteUrlType_pushAfterPop,                // 在上一个目录push             : ../
     XYRouteUrlType_pushAfterGotoRoot,           // 在根目录根push               : /
-    // XYRouteUrlType_push,                     // 在当前目录push                : 空
+    // XYRouteUrlType_push,                     // 在当前目录push               : 空
 }XYRouteType;
 
 @protocol XYRouteProtocol <NSObject>
-
-- (void)gotoBack;     // 返回上一个
-- (void)gotoRoot;     // 返回根
-- (void)gotoCurrent;  // 打开自己的方法
-
-- (UIViewController *)backViewController;
 
 @end
 
@@ -44,10 +38,13 @@ typedef UIViewController *(^XYRouterBlock)();
 
 @interface XYRouter : NSObject
 
-@property (nonatomic, copy, readonly) NSString *currentUrl;
-
 + (instancetype)sharedInstance;
+//+ (instancetype)routerWithHost:(NSString *)host;      // 通过这个生成不同的绑定?
 
+//+ (void)setRootViewController:(UIViewController *)viewController;
+
+@property (nonatomic, copy, readonly) NSString *currentPath;
+@property (nonatomic, strong) UIViewController *rootViewController;     // windows.rootViewController
 
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className;
 - (void)mapKey:(NSString *)key toControllerInstance:(UIViewController *)viewController;
@@ -55,7 +52,10 @@ typedef UIViewController *(^XYRouterBlock)();
 
 - (id)viewControllerForKey:(NSString *)key;
 
-- (void)openUrl:(NSString *)strUrl atNavigationController:(UINavigationController *)navigationController;
+// 传参问题?
+- (void)openPath:(NSString *)path atNavigationController:(UINavigationController *)navigationController;
+
++ (UINavigationController *)topNavigationController;
 
 @end
 
@@ -72,9 +72,5 @@ typedef UIViewController *(^XYRouterBlock)();
 
 - (void)uxy_openUrl:(NSString *)url;
 - (void)uxy_goBack;
-
-- (void)uxy_pushViewController:(UIViewController *)viewController
-                        params:(id)params
-                      animated:(BOOL)flag;
 
 @end
