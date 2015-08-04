@@ -59,7 +59,7 @@
         [UIApplication sharedApplication].delegate.window.rootViewController = rootViewController;
         [[UIApplication sharedApplication].delegate.window makeKeyAndVisible];
         _rootViewController = rootViewController;
-        if ([rootViewController isKindOfClass:[UINavigationController class]]);
+        if ([rootViewController isKindOfClass:[UINavigationController class]])
         {
             _navigationController = (UINavigationController *)rootViewController;
         }
