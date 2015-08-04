@@ -72,6 +72,13 @@
     {
         _navigationController = navigationController;
     }
+    else if (navigationController == nil)
+    {
+        if ([_rootViewController isKindOfClass:[UINavigationController class]])
+        {
+            _navigationController = (UINavigationController *)_rootViewController;
+        }
+    }
 }
 
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className

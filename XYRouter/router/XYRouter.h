@@ -45,8 +45,10 @@ typedef UIViewController *(^XYRouterBlock)();
 // 注册navigationController
 
 @property (nonatomic, copy, readonly) NSString *currentPath;
-@property (nonatomic, strong) UIViewController *rootViewController;     // windows.rootViewController
+@property (nonatomic, strong) UIViewController *rootViewController;     // windows.rootViewController, 默认用这个做navigationController
 
+// todo:一个默认最佳navigationController的获得方法
+// 在模态的场景下如果也想用router, 可以在present一个vc的时候用这个指定路由的navigationController, dismiss的时候设置成nil
 - (void)registerNavigationController:(UINavigationController *)navigationController;
 
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className;
