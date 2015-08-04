@@ -143,19 +143,22 @@
 - (void)openPath:(NSString *)path atNavigationController:(UINavigationController *)navigationController
 {
     NSURL *url = [NSURL URLWithString:path];
-    
     NSArray *components = [url pathComponents];
-    
     NSDictionary *queryDictonary = [self __dictionaryFromQuery:url.query];
-    
     NSString *scheme = url.scheme;
-    
     NSString *host = url.host;
-    // 处理host改变的情况
-    [self __handleHost:host];
+    UINavigationController *nvc = navigationController;
+    
+    BOOL isHostChanged = [self __handleHost:host];
+    
+    if (isHostChanged)
+    {
+        // todo 处理host改变的情况
+        nvc = navigationController;
+    }
 
     // 先看需求pop一些vc
-    [self __handlePopViewControllerByComponents:components atNavigationController:navigationController];
+    [self __handlePopViewControllerByComponents:components atNavigationController:nvc];
     
     // 只有一个路径直接push
     if (components.count == 1)
@@ -165,7 +168,7 @@
         {
             vc = ((UINavigationController *)vc).topViewController;
         }
-        [self __pushViewController:vc parameters:queryDictonary atNavigationController:navigationController animated:YES];
+        [self __pushViewController:vc parameters:queryDictonary atNavigationController:nvc animated:YES];
         return;
     }
     
@@ -182,7 +185,7 @@
             {
                 vc = ((UINavigationController *)vc).topViewController;
             }
-            [self __pushViewController:vc parameters:nil atNavigationController:navigationController animated:NO];
+            [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:NO];
         }
         
         UIViewController *vc = [self viewControllerForKey:[components lastObject]];
@@ -190,7 +193,7 @@
         {
             vc = ((UINavigationController *)vc).topViewController;
         }
-        [self __pushViewController:vc parameters:queryDictonary atNavigationController:navigationController animated:YES];
+        [self __pushViewController:vc parameters:queryDictonary atNavigationController:nvc animated:YES];
         return;
     }
 }
@@ -219,13 +222,16 @@
 }
 
 // 处理host改变的情况
-- (void)__handleHost:(NSString *)host
+- (BOOL)__handleHost:(NSString *)host
 {
     if (host.length > 0)
     {
         UIViewController *vc = [self viewControllerForKey:host];
         self.rootViewController = vc;
+        return YES;
     }
+    
+    return NO;
 }
 
 // 先看需求pop一些vc

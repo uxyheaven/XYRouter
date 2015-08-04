@@ -51,7 +51,8 @@
               @{@"title" : @"/"},
               @{@"title" : @"TestVC1/TableVC/TestVC1"},
               @{@"title" : @"TestVC1?str1=a&str2=2&i=1"},
-              @{@"title" : @"router://TestVC1"}
+              @{@"title" : @"router://TestVC2"},
+              @{@"title" : @"router://TableVC/TestVC1?str1=a&str2=2&i=1"}
               ];
     
     self.tableView.delegate = self;

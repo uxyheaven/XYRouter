@@ -15,6 +15,23 @@
 
 @implementation TestVC2
 
++ (UIViewController *)uxy_showedViewController
+{
+    UIViewController *vc = [self uxy_contentViewController];
+    UINavigationController *nvc = [self uxy_navigationController];
+    [nvc setViewControllers:@[vc]];
+    return nvc;
+}
+
++ (UIViewController *)uxy_contentViewController
+{
+    return [[self alloc] init];
+}
+
++ (UINavigationController *)uxy_navigationController
+{
+    return [[UINavigationController alloc] init];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -28,8 +45,8 @@
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(0, 250, 200, 50);
-    [btn setTitle:@"back" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [btn setTitle:@"router://TableVC" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(goTableVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
 }
 
@@ -50,5 +67,9 @@
 - (void)back
 {
     [self uxy_popViewControllerAnimated:YES completion:nil];
+}
+- (void)goTableVC
+{
+    [[XYRouter sharedInstance] openPath:@"router://TableVC" atNavigationController:self.navigationController];
 }
 @end

@@ -15,13 +15,6 @@
 
 @implementation TestVC1
 
-+ (UIViewController *)uxy_showedViewController
-{
-    UIViewController *vc = [[self alloc] init];
-    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
-    return nvc;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

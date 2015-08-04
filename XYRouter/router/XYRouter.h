@@ -10,9 +10,8 @@
 #import <UIKit/UIKit.h>
 
 /* todo
- * 1 懒加载
- * 2 内存释放
- * 3 openUrl
+ * path改变时候检查已有的path, 无需重新生成
+ * host改变的时候nav的问题
  */
 
 typedef enum
@@ -30,7 +29,10 @@ typedef enum
 
 @protocol XYRouteViewControllerProtocol <NSObject>
 
-+ (UIViewController *)uxy_showedViewController;
+// todo, 这里应该保留哪些
++ (UIViewController *)uxy_showedViewController;             // 整个要显示的ViewController
++ (UIViewController *)uxy_contentViewController;            // 内容的viewController
++ (UINavigationController *)uxy_navigationController;       // 导航的controller
 
 @end
 
