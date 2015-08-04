@@ -11,5 +11,5 @@
 
 // 这是一个符合XYRouteViewControllerProtocol协议, 带有导航的viewController
 @interface TestVC2 : UIViewController<XYRouteViewControllerProtocol>
-+ (UIViewController *)uxy_showedViewController;
+
 @end

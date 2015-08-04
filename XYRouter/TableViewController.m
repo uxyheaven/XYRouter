@@ -52,6 +52,7 @@
               @{@"title" : @"TestVC1/TableVC/TestVC1"},
               @{@"title" : @"TestVC1?str1=a&str2=2&i=1"},
               @{@"title" : @"router://TestVC2"},
+              @{@"title" : @"router://TestVC2/TestVC1"},
               @{@"title" : @"router://TableVC/TestVC1?str1=a&str2=2&i=1"}
               ];
     
@@ -89,7 +90,7 @@
     NSString *url = _list[indexPath.row][@"url"] ?: _list[indexPath.row][@"title"];
     if (url.length > 0)
     {
-        [[XYRouter sharedInstance] openPath:url atNavigationController:self.navigationController];
+        [[XYRouter sharedInstance] openPath:url];
     }
     
     // [self uxy_pushViewController:vc params:nil animated:YES completion:nil];

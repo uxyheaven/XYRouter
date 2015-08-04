@@ -30,9 +30,6 @@ typedef enum
 @protocol XYRouteViewControllerProtocol <NSObject>
 
 // todo, 这里应该保留哪些
-+ (UIViewController *)uxy_showedViewController;             // 整个要显示的ViewController
-+ (UIViewController *)uxy_contentViewController;            // 内容的viewController
-+ (UINavigationController *)uxy_navigationController;       // 导航的controller
 
 @end
 
@@ -45,9 +42,12 @@ typedef UIViewController *(^XYRouterBlock)();
 //+ (instancetype)routerWithHost:(NSString *)host;      // 通过这个生成不同的绑定?
 
 //+ (void)setRootViewController:(UIViewController *)viewController;
+// 注册navigationController
 
 @property (nonatomic, copy, readonly) NSString *currentPath;
 @property (nonatomic, strong) UIViewController *rootViewController;     // windows.rootViewController
+
+- (void)registerNavigationController:(UINavigationController *)navigationController;
 
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className;
 - (void)mapKey:(NSString *)key toControllerInstance:(UIViewController *)viewController;
@@ -56,7 +56,7 @@ typedef UIViewController *(^XYRouterBlock)();
 - (id)viewControllerForKey:(NSString *)key;
 
 // 传参问题?
-- (void)openPath:(NSString *)path atNavigationController:(UINavigationController *)navigationController;
+- (void)openPath:(NSString *)path;
 
 + (UINavigationController *)topNavigationController;
 

@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSString *currentRoute;
 @property (nonatomic, strong) NSString *finalRoute;
 @property (nonatomic, strong) XYTransitioning *transitioning;
+@property (nonatomic, strong) UINavigationController *navigationController;
 
 @end
 
@@ -44,7 +45,7 @@
 {
     self = [super init];
     if (self) {
-        _map = [@{} mutableCopy];
+        _map          = [@{} mutableCopy];
         _currentRoute = @"";
         //_transitioning = [[XYTransitioning alloc] init];
     }
@@ -60,6 +61,15 @@
         _rootViewController = rootViewController;
     }
 }
+
+- (void)registerNavigationController:(UINavigationController *)navigationController
+{
+    if ([navigationController isKindOfClass:[UINavigationController class]])
+    {
+        _navigationController = navigationController;
+    }
+}
+
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className
 {
     if (key.length == 0)
@@ -100,12 +110,9 @@
         obj = [_map objectForKey:key];
     }
 
+    if (obj == nil) return nil;
+
     UIViewController *vc = nil;
-    
-    if (obj == nil)
-    {
-        return nil;
-    }
     
     if ([obj isKindOfClass:[NSString class]])
     {
@@ -114,11 +121,7 @@
         NSString *error = [NSString stringWithFormat:@"%@ must be  a subclass of UIViewController class", obj];
         NSAssert([classType isSubclassOfClass:[UIViewController class]], error);
 #endif
-        if ([classType respondsToSelector:@selector(uxy_showedViewController)])
-        {
-            vc = [classType uxy_showedViewController];
-        }
-        else if ([classType respondsToSelector:@selector(sharedInstance)])
+        if ([classType respondsToSelector:@selector(sharedInstance)])
         {
             vc = [classType sharedInstance];
         }
@@ -140,21 +143,29 @@
     return vc;
 }
 
-- (void)openPath:(NSString *)path atNavigationController:(UINavigationController *)navigationController
+- (void)openPath:(NSString *)path
 {
-    NSURL *url = [NSURL URLWithString:path];
-    NSArray *components = [url pathComponents];
+    NSURL *url                   = [NSURL URLWithString:path];
+    NSArray *components          = [url pathComponents];
     NSDictionary *queryDictonary = [self __dictionaryFromQuery:url.query];
-    NSString *scheme = url.scheme;
-    NSString *host = url.host;
-    UINavigationController *nvc = navigationController;
+    NSString *scheme             = url.scheme;
+    NSString *host               = url.host;
+    NSString *parameterString    = url.parameterString;
+    UINavigationController *nvc  = _navigationController;
     
     BOOL isHostChanged = [self __handleHost:host];
     
     if (isHostChanged)
     {
         // todo 处理host改变的情况
-        nvc = navigationController;
+        if ([self.rootViewController isKindOfClass:[UINavigationController class]])
+        {
+            nvc = (UINavigationController *)self.rootViewController;
+        }
+        else
+        {
+            nvc = self.rootViewController.navigationController;
+        }
     }
 
     // 先看需求pop一些vc
@@ -178,8 +189,8 @@
         for (NSInteger i = 0; i < components.count - 1; i++) {
             if ([components[i] isEqualToString:@"."] ||
                 [components[i] isEqualToString:@".."]
-                )
-                continue;
+                ) continue;
+            
             UIViewController *vc = [self viewControllerForKey:components[i]];
             if ([vc isKindOfClass:[UINavigationController class]])
             {
@@ -287,9 +298,9 @@
         NSArray *keyValuePairArray = [keyValuePairString componentsSeparatedByString:@"="];
         if ([keyValuePairArray count] < 2) continue;
         
-        NSString *key = [self __URLDecodingWithEncodingString:keyValuePairArray[0]];
+        NSString *key   = [self __URLDecodingWithEncodingString:keyValuePairArray[0]];
         NSString *value = [self __URLDecodingWithEncodingString:keyValuePairArray[1]];
-        result[key]= value;
+        result[key]     = value;
     }
     
     return result;
@@ -341,37 +352,3 @@
 @end
 
 #pragma mark - XYRouter_private
-/*
-@implementation NSString (XYRouter_private)
-
-- (NSString *)__uxy_URLDecoding
-{
-    NSMutableString *string = [NSMutableString stringWithString:self];
-    [string replaceOccurrencesOfString:@"+"
-                            withString:@" "
-                               options:NSLiteralSearch
-                                 range:NSMakeRange(0, [string length])];
-    return [string stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-}
-
-- (NSMutableDictionary *)__uxy_dictionaryFromQueryComponents
-{
-    NSMutableDictionary *queryComponents = [NSMutableDictionary dictionary];
-    for (NSString *keyValuePairString in [self componentsSeparatedByString:@"&"])
-    {
-        NSArray *keyValuePairArray = [keyValuePairString componentsSeparatedByString:@"="];
-        if ([keyValuePairArray count] < 2) continue;
-        NSString *key = [[keyValuePairArray objectAtIndex:0] __uxy_URLDecoding];
-        NSString *value = [[keyValuePairArray objectAtIndex:1] __uxy_URLDecoding];
-        NSMutableArray *results = [queryComponents objectForKey:key];
-        if(!results)
-        {
-            results = [NSMutableArray arrayWithCapacity:1];
-            [queryComponents setObject:results forKey:key];
-        }
-        [results addObject:value];
-    }
-    return queryComponents;
-}
-@end
-*/
