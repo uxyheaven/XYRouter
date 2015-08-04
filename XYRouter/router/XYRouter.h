@@ -58,13 +58,13 @@ typedef UIViewController *(^XYRouterBlock)();
 // 传参问题?
 - (void)openPath:(NSString *)path;
 
-+ (UINavigationController *)topNavigationController;
+//+ (UINavigationController *)topNavigationController;
 
 @end
 
 #pragma mark -
+/*
 @interface UIViewController (XYRouter)
-
 - (void)uxy_pushViewController:(UIViewController *)viewController
                         params:(id)params
                       animated:(BOOL)flag
@@ -75,5 +75,5 @@ typedef UIViewController *(^XYRouterBlock)();
 
 - (void)uxy_openUrl:(NSString *)url;
 - (void)uxy_goBack;
-
 @end
+*/

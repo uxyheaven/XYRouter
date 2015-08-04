@@ -50,7 +50,7 @@
 */
 - (void)back
 {
-    [self uxy_popViewControllerAnimated:YES completion:nil];
+    //[self uxy_popViewControllerAnimated:YES completion:nil];
 }
 - (void)goTableVC
 {
