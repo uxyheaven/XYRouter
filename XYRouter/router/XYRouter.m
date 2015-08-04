@@ -22,7 +22,6 @@
 @property (nonatomic, strong) NSString *currentRoute;
 @property (nonatomic, strong) NSString *finalRoute;
 @property (nonatomic, strong) XYTransitioning *transitioning;
-@property (nonatomic, strong) UINavigationController *navigationController;
 
 @end
 
@@ -59,26 +58,11 @@
         [UIApplication sharedApplication].delegate.window.rootViewController = rootViewController;
         [[UIApplication sharedApplication].delegate.window makeKeyAndVisible];
         _rootViewController = rootViewController;
-        if ([rootViewController isKindOfClass:[UINavigationController class]])
-        {
-            _navigationController = (UINavigationController *)rootViewController;
-        }
     }
 }
 
 - (void)registerNavigationController:(UINavigationController *)navigationController
 {
-    if ([navigationController isKindOfClass:[UINavigationController class]])
-    {
-        _navigationController = navigationController;
-    }
-    else if (navigationController == nil)
-    {
-        if ([_rootViewController isKindOfClass:[UINavigationController class]])
-        {
-            _navigationController = (UINavigationController *)_rootViewController;
-        }
-    }
 }
 
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className
@@ -162,7 +146,7 @@
     NSString *scheme             = url.scheme;
     NSString *host               = url.host;
     NSString *parameterString    = url.parameterString;
-    UINavigationController *nvc  = _navigationController;
+    UINavigationController *nvc  = [[self class] __uxy_visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController].navigationController;
     
     BOOL isHostChanged = [self __handleHost:host];
     
@@ -243,6 +227,28 @@
     return XYRouteUrlType_push;
 }
 
++ (UIViewController*)__uxy_visibleViewControllerWithRootViewController:(UIViewController*)rootViewController
+{
+    if ([rootViewController isKindOfClass:[UITabBarController class]])
+    {
+        UITabBarController *tbc = (UITabBarController*)rootViewController;
+        return [self __uxy_visibleViewControllerWithRootViewController:tbc.selectedViewController];
+    }
+    else if ([rootViewController isKindOfClass:[UINavigationController class]])
+    {
+        UINavigationController *nvc = (UINavigationController*)rootViewController;
+        return [self __uxy_visibleViewControllerWithRootViewController:nvc.visibleViewController];
+    }
+    else if (rootViewController.presentedViewController)
+    {
+        UIViewController *presentedVC = rootViewController.presentedViewController;
+        return [self __uxy_visibleViewControllerWithRootViewController:presentedVC];
+    }
+    else
+    {
+        return rootViewController;
+    }
+}
 // 处理host改变的情况
 - (BOOL)__handleHost:(NSString *)host
 {
