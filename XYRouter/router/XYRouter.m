@@ -146,7 +146,7 @@
     NSString *scheme             = url.scheme;
     NSString *host               = url.host;
     NSString *parameterString    = url.parameterString;
-    UINavigationController *nvc  = [[self class] visibleNavigationController];
+    UINavigationController *nvc  = [[self class] visibleNavigationController:nil];
     if ([@"miss" isEqualToString:(NSString *)nvc])
     {
         nvc = [[self class] __visibleNavigationController];
@@ -208,10 +208,11 @@
     }
 }
 
-+ (UINavigationController *)topNavigationController
++ (UINavigationController *)visibleNavigationController:(id)data
 {
-    return nil;
+    return (UINavigationController *)@"miss";
 }
+
 #pragma mark - private
 - (XYRouteType)routeTypeByComponent:(NSString *)component
 {
@@ -230,10 +231,7 @@
     
     return XYRouteUrlType_push;
 }
-+ (UINavigationController *)visibleNavigationController
-{
-    return (UINavigationController *)@"miss";
-}
+
 + (UINavigationController *)__visibleNavigationController
 {
     return (UINavigationController *)[self __uxy_visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController.navigationController];

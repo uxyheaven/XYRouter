@@ -39,10 +39,6 @@ typedef UIViewController *(^XYRouterBlock)();
 @interface XYRouter : NSObject
 
 + (instancetype)sharedInstance;
-//+ (instancetype)routerWithHost:(NSString *)host;      // 通过这个生成不同的绑定?
-
-//+ (void)setRootViewController:(UIViewController *)viewController;
-// 注册navigationController
 
 @property (nonatomic, copy, readonly) NSString *currentPath;
 @property (nonatomic, strong) UIViewController *rootViewController;     // windows.rootViewController
@@ -59,8 +55,8 @@ typedef UIViewController *(^XYRouterBlock)();
 // 传参问题?
 - (void)openPath:(NSString *)path;
 
-// 你可以在子类重写这个方法返回实际显示的NavigationController
-+ (UINavigationController *)visibleNavigationController;
+/// 默认有个返回实际显示navigationController的方法. 你也可以在子类重写这个方法返回你期望的 navigationController
++ (UINavigationController *)visibleNavigationController:(id)data;
 
 @end
 
