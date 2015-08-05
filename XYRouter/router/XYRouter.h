@@ -59,7 +59,8 @@ typedef UIViewController *(^XYRouterBlock)();
 // 传参问题?
 - (void)openPath:(NSString *)path;
 
-//+ (UINavigationController *)topNavigationController;
+// 你可以在子类重写这个方法返回实际显示的NavigationController
++ (UINavigationController *)visibleNavigationController;
 
 @end
 

@@ -146,7 +146,11 @@
     NSString *scheme             = url.scheme;
     NSString *host               = url.host;
     NSString *parameterString    = url.parameterString;
-    UINavigationController *nvc  = [[self class] __uxy_visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController].navigationController;
+    UINavigationController *nvc  = [[self class] visibleNavigationController];
+    if ([@"miss" isEqualToString:(NSString *)nvc])
+    {
+        nvc = [[self class] __visibleNavigationController];
+    }
     
     BOOL isHostChanged = [self __handleHost:host];
     
@@ -225,6 +229,14 @@
     }
     
     return XYRouteUrlType_push;
+}
++ (UINavigationController *)visibleNavigationController
+{
+    return (UINavigationController *)@"miss";
+}
++ (UINavigationController *)__visibleNavigationController
+{
+    return (UINavigationController *)[self __uxy_visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController.navigationController];
 }
 
 + (UIViewController*)__uxy_visibleViewControllerWithRootViewController:(UIViewController*)rootViewController
