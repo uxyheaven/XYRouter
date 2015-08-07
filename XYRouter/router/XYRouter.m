@@ -146,27 +146,20 @@
     NSString *scheme             = url.scheme;
     NSString *host               = url.host;
     NSString *parameterString    = url.parameterString;
-    UINavigationController *nvc  = [[self class] visibleNavigationController:nil];
-    if ([@"miss" isEqualToString:(NSString *)nvc])
-    {
-        nvc = [[self class] __visibleNavigationController];
-    }
     
     BOOL isHostChanged = [self __handleHost:host];
     
     if (isHostChanged)
     {
         // todo 处理host改变的情况
-        if ([self.rootViewController isKindOfClass:[UINavigationController class]])
-        {
-            nvc = (UINavigationController *)self.rootViewController;
-        }
-        else
-        {
-            nvc = self.rootViewController.navigationController;
-        }
     }
-
+    
+    UINavigationController *nvc  = [[self class] visibleNavigationController:nil];
+    if ([@"miss" isEqualToString:(NSString *)nvc])
+    {
+        nvc = [[self class] __visibleNavigationController];
+    }
+    
     // 先看需求pop一些vc
     [self __handlePopViewControllerByComponents:components atNavigationController:nvc];
     
