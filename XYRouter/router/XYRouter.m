@@ -234,7 +234,9 @@
 
 + (UINavigationController *)__visibleNavigationController
 {
-    return (UINavigationController *)[self __uxy_visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController.navigationController];
+    UIViewController *vc = [self __uxy_visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController];
+    UINavigationController *nvc = (UINavigationController *)([vc isKindOfClass:[UINavigationController class]] ? vc : vc.navigationController);
+    return nvc;
 }
 
 + (UIViewController*)__uxy_visibleViewControllerWithRootViewController:(UIViewController*)rootViewController
