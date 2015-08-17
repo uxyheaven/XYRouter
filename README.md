@@ -41,5 +41,22 @@ UIViewController *vc = [[XYRouter sharedInstance] viewControllerForKey:@"aaa"];
     }];
 ```
 
+### Opening path
+你可以使用key去push出一个viewController
 
+```
+[[XYRouter sharedInstance] openPath:@"aaa"];
+```
+path还支持相对路径, 如下面的代码可以在当前目录下push出一个TableVC后, 再push出TestVC1.
+
+```
+[[XYRouter sharedInstance] openPath:@"./TableVC/TestVC1"];
+
+```
+
+目前支持这些描述:
+
+* 在当前目录push  `./`
+* 在上一个目录push `../`
+*  在根目录根push ` /`
 
