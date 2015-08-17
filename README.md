@@ -1,11 +1,11 @@
 # XYRouter
 XYRouter是通过url routing来解决UIViewController跳转依赖的类.
-* 本类才用ARC
+* 本类采用ARC
 
 ## Installation
 * 本库基于ARC
 * 拷贝XYQuick到项目里
-* 在需要用的文件或者pch里 `#import "XYRouter.h"
+* 在需要用的文件或者pch里 `#import "XYRouter.h"`
 
 ### Podfile
 
