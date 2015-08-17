@@ -8,6 +8,7 @@
 
 #import "TableViewController.h"
 #import "XYRouter.h"
+#import "ViewController+nvcItem.h"
 
 @interface TableViewController ()
 @property (nonatomic, strong) NSArray *list;
@@ -61,8 +62,7 @@
     self.tableView.dataSource = self;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"reuseIdentifier"];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(clickCompose)];
-    self.navigationItem.rightBarButtonItem = item;
+    [self addRightBarButtonItem];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -151,12 +151,5 @@
         return nvc;
     }];
     
-}
-
-- (void)clickCompose
-{
-    NSString *str = [XYRouter sharedInstance].currentPath;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:str delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
-    [alert show];
 }
 @end

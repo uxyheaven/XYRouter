@@ -16,6 +16,7 @@
 		57CF31FB1A6F9EC200F6A9AE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57CF31F91A6F9EC200F6A9AE /* LaunchScreen.xib */; };
 		57CF32071A6F9EC200F6A9AE /* XYRouterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF32061A6F9EC200F6A9AE /* XYRouterTests.m */; };
 		57CF32131A6F9EF600F6A9AE /* XYRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 57CF32121A6F9EF600F6A9AE /* XYRouter.m */; };
+		57E8B8261B818B2C000A2F99 /* ViewController+nvcItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B8251B818B2C000A2F99 /* ViewController+nvcItem.m */; };
 		57ECC8A21B60C4F4001F4B2B /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 57ECC8A11B60C4F4001F4B2B /* manifest.json */; };
 		57ECC8A51B60C5B5001F4B2B /* TestVC2.m in Sources */ = {isa = PBXBuildFile; fileRef = 57ECC8A41B60C5B5001F4B2B /* TestVC2.m */; };
 		57F57CC31B2025A7009F3145 /* TestVC1.m in Sources */ = {isa = PBXBuildFile; fileRef = 57F57CC21B2025A7009F3145 /* TestVC1.m */; };
@@ -50,6 +51,8 @@
 		57CF32061A6F9EC200F6A9AE /* XYRouterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYRouterTests.m; sourceTree = "<group>"; };
 		57CF32111A6F9EF600F6A9AE /* XYRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYRouter.h; sourceTree = "<group>"; };
 		57CF32121A6F9EF600F6A9AE /* XYRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYRouter.m; sourceTree = "<group>"; };
+		57E8B8241B818B2C000A2F99 /* ViewController+nvcItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+nvcItem.h"; sourceTree = "<group>"; };
+		57E8B8251B818B2C000A2F99 /* ViewController+nvcItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+nvcItem.m"; sourceTree = "<group>"; };
 		57ECC8A11B60C4F4001F4B2B /* manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
 		57ECC8A31B60C5B5001F4B2B /* TestVC2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC2.h; sourceTree = "<group>"; };
 		57ECC8A41B60C5B5001F4B2B /* TestVC2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC2.m; sourceTree = "<group>"; };
@@ -99,6 +102,8 @@
 				57CF32101A6F9EDA00F6A9AE /* router */,
 				57CF31EE1A6F9EC200F6A9AE /* AppDelegate.h */,
 				57CF31EF1A6F9EC200F6A9AE /* AppDelegate.m */,
+				57E8B8241B818B2C000A2F99 /* ViewController+nvcItem.h */,
+				57E8B8251B818B2C000A2F99 /* ViewController+nvcItem.m */,
 				57CF31F11A6F9EC200F6A9AE /* ViewController.h */,
 				57CF31F21A6F9EC200F6A9AE /* ViewController.m */,
 				57ECC8A11B60C4F4001F4B2B /* manifest.json */,
@@ -259,6 +264,7 @@
 				57232DB11B0F341700A8FE39 /* TableViewController.m in Sources */,
 				57ECC8A51B60C5B5001F4B2B /* TestVC2.m in Sources */,
 				577653871B6713CA00E39BC4 /* XYTransitioning.m in Sources */,
+				57E8B8261B818B2C000A2F99 /* ViewController+nvcItem.m in Sources */,
 				57CF32131A6F9EF600F6A9AE /* XYRouter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

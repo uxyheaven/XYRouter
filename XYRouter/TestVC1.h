@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "XYRouter.h"
 
 // 这是一个带有参数的viewController
 @interface TestVC1 : UIViewController

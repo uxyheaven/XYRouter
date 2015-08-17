@@ -8,6 +8,7 @@
 
 #import "TestVC2.h"
 #import "XYRouter.h"
+#import "ViewController+nvcItem.h"
 
 @interface TestVC2 ()
 
@@ -33,8 +34,7 @@
     [btn addTarget:self action:@selector(goTableVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(clickCompose)];
-    self.navigationItem.rightBarButtonItem = item;
+    [self addRightBarButtonItem];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,10 +60,4 @@
     [[XYRouter sharedInstance] openPath:@"router://TableVC"];
 }
 
-- (void)clickCompose
-{
-    NSString *str = [XYRouter sharedInstance].currentPath;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:str delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
-    [alert show];
-}
 @end
