@@ -73,5 +73,12 @@ path还支持相对路径, 如下面的代码可以在当前目录下push出一�
 [[XYRouter sharedInstance] openPath:@"TestVC1?str1=a&str2=2&i=1"];
 ```
 
+#### Changing rootViewController
+可以用完整的路径替换windows.rootViewController
+
+```
+// rootViewController : nvc_TableVC
+[[XYRouter sharedInstance] openPath:@"router://nvc_TableVC/TestVC1"];
+```
 
 
