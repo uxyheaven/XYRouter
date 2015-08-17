@@ -31,7 +31,7 @@ UIViewController *vc = [[XYRouter sharedInstance] viewControllerForKey:@"aaa"];
 ```
 
 ### Maping a viewController instance with a block
-如果想在需要的时候才创建对象, 以及更好的定制对象, 可以用block
+如果想更好的定制对象, 可以用block
 
 ```
 [[XYRouter sharedInstance] mapKey:@"nvc_TableVC" toBlock:^UIViewController *{
