@@ -33,6 +33,9 @@
     [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(clickCompose)];
+    self.navigationItem.rightBarButtonItem = item;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,5 +56,12 @@
 - (void)back
 {
    // [self uxy_popViewControllerAnimated:YES completion:nil];
+}
+
+- (void)clickCompose
+{
+    NSString *str = [XYRouter sharedInstance].currentPath;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:str delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
+    [alert show];
 }
 @end

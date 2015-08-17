@@ -14,14 +14,20 @@
 @interface NSString (XYRouter_private)
 - (NSMutableDictionary *)__uxy_dictionaryFromQueryComponents;
 @end
-#pragma mark
+#pragma mark - UIViewController_private
+@interface UIViewController (UIViewController_private)
+@property (nonatomic, copy) NSString *uxy_pathComponent;
+@end
+
+#pragma mark -
 @interface XYRouter ()
 
 @property (nonatomic, strong) NSMutableDictionary *map;
 @property (nonatomic, strong) UIViewController <XYRouteProtocol> *currentViewRoute;       // 当前的控制器
-@property (nonatomic, strong) NSString *currentRoute;
-@property (nonatomic, strong) NSString *finalRoute;
+@property (nonatomic, copy) NSString *currentPath;
 @property (nonatomic, strong) XYTransitioning *transitioning;
+
+@property (nonatomic, assign) BOOL isPathCacheChanged;
 
 @end
 
@@ -44,13 +50,26 @@
 {
     self = [super init];
     if (self) {
-        _map          = [@{} mutableCopy];
-        _currentRoute = @"";
+        _map                = [@{} mutableCopy];
+        _isPathCacheChanged = YES;
         //_transitioning = [[XYTransitioning alloc] init];
     }
     return self;
 }
-
+- (NSString *)currentPath
+{
+    if (_isPathCacheChanged)
+    {
+        __block NSString *string = @"";
+        UINavigationController *nvc = [[self class] __visibleNavigationController];
+        [nvc.viewControllers enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL *stop) {
+            string = [NSString stringWithFormat:@"%@/%@", string, vc.uxy_pathComponent];
+        }];
+        _currentPath = string;
+    }
+    
+    return _currentPath;
+}
 - (void)setRootViewController:(UIViewController *)rootViewController
 {
     if (_rootViewController != rootViewController)
@@ -135,6 +154,8 @@
         vc = objBlock();
     }
     
+    vc.uxy_pathComponent = key;
+    
     return vc;
 }
 
@@ -146,6 +167,7 @@
     NSString *scheme             = url.scheme;
     NSString *host               = url.host;
     NSString *parameterString    = url.parameterString;
+    _isPathCacheChanged          = YES;
     
     BOOL isHostChanged = [self __handleHost:host];
     
@@ -154,11 +176,7 @@
         // todo 处理host改变的情况
     }
     
-    UINavigationController *nvc  = [[self class] visibleNavigationController:nil];
-    if ([@"miss" isEqualToString:(NSString *)nvc])
-    {
-        nvc = [[self class] __visibleNavigationController];
-    }
+    UINavigationController *nvc = [[self class] __visibleNavigationController];
     
     // 先看需求pop一些vc
     [self __handlePopViewControllerByComponents:components atNavigationController:nvc];
@@ -178,7 +196,8 @@
     // 多个路径先无动画push中间的vc, 最后在push最后的vc
     if (components.count > 1)
     {
-        for (NSInteger i = 0; i < components.count - 1; i++) {
+        for (NSInteger i = 0; i < components.count - 1; i++)
+        {
             if ([components[i] isEqualToString:@"."] ||
                 [components[i] isEqualToString:@".."]
                 ) continue;
@@ -201,7 +220,7 @@
     }
 }
 
-+ (UINavigationController *)visibleNavigationController:(id)data
++ (UINavigationController *)visibleNavigationController
 {
     return (UINavigationController *)@"miss";
 }
@@ -227,27 +246,35 @@
 
 + (UINavigationController *)__visibleNavigationController
 {
-    UIViewController *vc = [self __uxy_visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController];
-    UINavigationController *nvc = (UINavigationController *)([vc isKindOfClass:[UINavigationController class]] ? vc : vc.navigationController);
-    return nvc;
+    UINavigationController *nvc = [[self class] visibleNavigationController];
+    if ([nvc isKindOfClass:[UINavigationController class]])
+    {
+        return nvc;
+    }
+    else
+    {
+        UIViewController *vc = [self __visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController];
+        UINavigationController *nvc = (UINavigationController *)([vc isKindOfClass:[UINavigationController class]] ? vc : vc.navigationController);
+        return nvc;
+    }
 }
 
-+ (UIViewController*)__uxy_visibleViewControllerWithRootViewController:(UIViewController*)rootViewController
++ (UIViewController*)__visibleViewControllerWithRootViewController:(UIViewController*)rootViewController
 {
     if ([rootViewController isKindOfClass:[UITabBarController class]])
     {
         UITabBarController *tbc = (UITabBarController*)rootViewController;
-        return [self __uxy_visibleViewControllerWithRootViewController:tbc.selectedViewController];
+        return [self __visibleViewControllerWithRootViewController:tbc.selectedViewController];
     }
     else if ([rootViewController isKindOfClass:[UINavigationController class]])
     {
         UINavigationController *nvc = (UINavigationController*)rootViewController;
-        return [self __uxy_visibleViewControllerWithRootViewController:nvc.visibleViewController];
+        return [self __visibleViewControllerWithRootViewController:nvc.visibleViewController];
     }
     else if (rootViewController.presentedViewController)
     {
         UIViewController *presentedVC = rootViewController.presentedViewController;
-        return [self __uxy_visibleViewControllerWithRootViewController:presentedVC];
+        return [self __visibleViewControllerWithRootViewController:presentedVC];
     }
     else
     {
@@ -290,6 +317,25 @@
         [navigationController popToRootViewControllerAnimated:animated];
     }
 }
+
+- (NSInteger)lastSameComponentWithComponents:(NSArray *)components viewControllers:(NSArray *)vcs
+{
+    NSInteger max = MIN(components.count, vcs.count);
+    
+    NSInteger result = 0;
+    for (NSInteger i = 1; i < max; i++)
+    {
+        // NSLog(@"%@ %@", components[i], [vcs[i] uxy_pathComponent]);
+        if (![components[i] isEqualToString:[vcs[i] uxy_pathComponent]])
+        {
+            result = i - 1;
+            break;
+        }
+    }
+    
+    return result;
+}
+
 - (void)__pushViewController:(UIViewController *)viewController parameters:(NSDictionary *)parameters atNavigationController:(UINavigationController *)navigationController animated:(BOOL)animated
 {
     if (viewController == nil || navigationController == nil) return;
@@ -330,6 +376,8 @@
 @end
 
 #pragma mark -
+static const char *XYRouter_pathComponent = "UIViewController.pathComponent";
+
 @implementation UIViewController (XYRouter)
 
 - (void)uxy_pushViewController:(UIViewController *)viewController
@@ -371,6 +419,26 @@
     [self uxy_popViewControllerAnimated:YES completion:nil];
 }
 
+- (NSString *)uxy_pathComponent
+{
+    return objc_getAssociatedObject(self, XYRouter_pathComponent);
+}
+
+- (void)setUxy_pathComponent:(NSString *)uxy_pathComponent
+{
+    objc_setAssociatedObject(self, XYRouter_pathComponent, uxy_pathComponent, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
 @end
 
 #pragma mark - XYRouter_private
+
+
+#pragma mark -
+
+
+
+
+
+
+

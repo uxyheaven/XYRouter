@@ -32,6 +32,9 @@
     [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(goTableVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(clickCompose)];
+    self.navigationItem.rightBarButtonItem = item;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,5 +58,12 @@
 - (void)goTableVC
 {
     [[XYRouter sharedInstance] openPath:@"router://TableVC"];
+}
+
+- (void)clickCompose
+{
+    NSString *str = [XYRouter sharedInstance].currentPath;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:str delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
+    [alert show];
 }
 @end

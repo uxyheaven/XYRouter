@@ -47,6 +47,7 @@
               @{@"title" : @"TableVC"},
               @{@"title" : @"./TableVC/TestVC1"},
               @{@"title" : @"./TestVC1/TableVC"},
+              @{@"title" : @"/TableVC/TestVC1"},
               @{@"title" : @"../"},
               @{@"title" : @"/"},
               @{@"title" : @"TestVC1/TableVC/TestVC1"},
@@ -59,6 +60,9 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"reuseIdentifier"];
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(clickCompose)];
+    self.navigationItem.rightBarButtonItem = item;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -138,10 +142,17 @@
     // Pass the selected object to the new view controller.
 }
 */
-#pragma mark-
+#pragma mark -
 - (void)registerViewControllers
 {
     [[XYRouter sharedInstance] mapKey:@"aa" toControllerClassName:@"TableVC"];
     [[XYRouter sharedInstance] mapKey:@"bb" toControllerClassName:@"TableVC"];
+}
+
+- (void)clickCompose
+{
+    NSString *str = [XYRouter sharedInstance].currentPath;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:str delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
+    [alert show];
 }
 @end

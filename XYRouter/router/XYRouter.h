@@ -56,7 +56,7 @@ typedef UIViewController *(^XYRouterBlock)();
 - (void)openPath:(NSString *)path;
 
 /// 默认有个返回实际显示navigationController的方法. 你也可以在子类重写这个方法返回你期望的 navigationController
-+ (UINavigationController *)visibleNavigationController:(id)data;
++ (UINavigationController *)visibleNavigationController;
 
 @end
 
@@ -75,3 +75,10 @@ typedef UIViewController *(^XYRouterBlock)();
 - (void)uxy_goBack;
 @end
 */
+
+#pragma mark -
+
+@interface UIViewController (XYRouter)
+@property (nonatomic, copy, readonly) NSString *uxy_pathComponent;
+@end
+
