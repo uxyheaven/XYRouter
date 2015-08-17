@@ -9,6 +9,12 @@ XYRouter是一个通过url routing来解决UIViewController跳转依赖的类.
 
 ### Podfile
 
+```
+pod 'XYRouter'
+
+#import "XYRouter.h"
+```
+
 ## Usage
 ### Creating viewController map
 可以通过key和NSString来映射一个UIViewController
