@@ -23,17 +23,6 @@ typedef enum
     // XYRouteUrlType_push,                     // 在当前目录push               : 空
 }XYRouteType;
 
-@protocol XYRouteProtocol <NSObject>
-
-@end
-
-@protocol XYRouteViewControllerProtocol <NSObject>
-
-// todo, 这里应该保留哪些
-
-@end
-
-
 typedef UIViewController *(^XYRouterBlock)();
 
 @interface XYRouter : NSObject
@@ -43,39 +32,18 @@ typedef UIViewController *(^XYRouterBlock)();
 @property (nonatomic, copy, readonly) NSString *currentPath;
 @property (nonatomic, strong) UIViewController *rootViewController;     // windows.rootViewController
 
-// 在模态的场景下如果也想用router, 可以在present一个vc的时候用这个指定路由的navigationController, dismiss的时候设置成nil
-//- (void)registerNavigationController:(UINavigationController *)navigationController;
-
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className;
 - (void)mapKey:(NSString *)key toControllerInstance:(UIViewController *)viewController;
 - (void)mapKey:(NSString *)key toBlock:(XYRouterBlock)block;
 
 - (id)viewControllerForKey:(NSString *)key;
 
-// 传参问题?
 - (void)openPath:(NSString *)path;
 
 /// 默认有个返回实际显示navigationController的方法. 你也可以在子类重写这个方法返回你期望的 navigationController
 + (UINavigationController *)visibleNavigationController;
 
 @end
-
-#pragma mark -
-/*
-@interface UIViewController (XYRouter)
-- (void)uxy_pushViewController:(UIViewController *)viewController
-                        params:(id)params
-                      animated:(BOOL)flag
-                    completion:(void (^)(id viewController))completion;
-
-- (void)uxy_popViewControllerAnimated:(BOOL)flag
-                           completion:(void (^)(void))completion;
-
-- (void)uxy_openUrl:(NSString *)url;
-- (void)uxy_goBack;
-@end
-*/
-
 #pragma mark -
 
 @interface UIViewController (XYRouter)

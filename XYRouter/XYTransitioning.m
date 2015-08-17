@@ -35,6 +35,7 @@
     }
     return self;
 }
+#pragma mark - UIViewControllerTransitioningDelegate
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
     return self.presentAnimation;
@@ -48,6 +49,19 @@
 -(id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
 {
     return self.transitionController.interacting ? self.transitionController : nil;
+}
+
+#pragma mark - UINavigationControllerDelegate
+- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    if (operation == UINavigationControllerOperationPush)
+    {
+        return self.presentAnimation;
+    }
+    return nil;
 }
 
 @end

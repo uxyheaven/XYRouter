@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "XYRouter.h"
 
-// 这是一个符合XYRouteViewControllerProtocol协议, 带有导航的viewController
-@interface TestVC2 : UIViewController<XYRouteViewControllerProtocol>
+@interface TestVC2 : UIViewController
 
 @end

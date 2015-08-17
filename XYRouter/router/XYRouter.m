@@ -8,7 +8,6 @@
 
 #import "XYRouter.h"
 #import <objc/runtime.h>
-#import "XYTransitioning.h"
 
 #pragma mark - XYRouter_private
 @interface NSString (XYRouter_private)
@@ -23,9 +22,8 @@
 @interface XYRouter ()
 
 @property (nonatomic, strong) NSMutableDictionary *map;
-@property (nonatomic, strong) UIViewController <XYRouteProtocol> *currentViewRoute;       // 当前的控制器
+@property (nonatomic, strong) UIViewController *currentViewRoute;       // 当前的控制器
 @property (nonatomic, copy) NSString *currentPath;
-@property (nonatomic, strong) XYTransitioning *transitioning;
 
 @property (nonatomic, assign) BOOL isPathCacheChanged;
 
@@ -52,7 +50,6 @@
     if (self) {
         _map                = [@{} mutableCopy];
         _isPathCacheChanged = YES;
-        //_transitioning = [[XYTransitioning alloc] init];
     }
     return self;
 }
@@ -78,10 +75,6 @@
         [[UIApplication sharedApplication].delegate.window makeKeyAndVisible];
         _rootViewController = rootViewController;
     }
-}
-
-- (void)registerNavigationController:(UINavigationController *)navigationController
-{
 }
 
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className
@@ -366,45 +359,6 @@
 static const char *XYRouter_pathComponent = "UIViewController.pathComponent";
 
 @implementation UIViewController (XYRouter)
-
-- (void)uxy_pushViewController:(UIViewController *)viewController
-                        params:(id)params
-                      animated:(BOOL)flag
-                    completion:(void (^)(id viewController))completion
-{
-    if ([XYRouter sharedInstance].transitioning)
-    {
-        viewController.transitioningDelegate = [XYRouter sharedInstance].transitioning;
-        [[XYRouter sharedInstance].transitioning.transitionController wireToViewController:viewController];
-    }
-    else
-    {
-       // viewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
-    }
-
-
-    [self presentViewController:viewController animated:flag completion:^{
-        !completion ?: completion(viewController);
-    }];
-
-   // [self showDetailViewController:viewController sender:self];
-}
-
-- (void)uxy_popViewControllerAnimated: (BOOL)flag completion: (void (^)(void))completion
-{
-    [self dismissViewControllerAnimated:flag completion:completion];
-}
-
-- (void)uxy_openUrl:(NSString *)url
-{
-    UIViewController *vc = [[XYRouter sharedInstance] viewControllerForKey:url];
-    [self uxy_pushViewController:vc params:nil animated:YES completion:nil];
-}
-
-- (void)uxy_goBack
-{
-    [self uxy_popViewControllerAnimated:YES completion:nil];
-}
 
 - (NSString *)uxy_pathComponent
 {

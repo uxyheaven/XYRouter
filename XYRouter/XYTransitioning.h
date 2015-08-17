@@ -18,7 +18,7 @@
 @end
 
 #pragma mark -
-@interface XYTransitioning : NSObject <UIViewControllerTransitioningDelegate>
+@interface XYTransitioning : NSObject <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 
 + (instancetype)sharedInstance;
 
