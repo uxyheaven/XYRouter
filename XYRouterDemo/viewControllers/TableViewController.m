@@ -154,6 +154,5 @@
         UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
         return nvc;
     }];
-    
 }
 @end
