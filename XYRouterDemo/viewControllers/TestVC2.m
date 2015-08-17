@@ -32,7 +32,7 @@
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(0, 250, 200, 50);
-    [btn setTitle:@"router://TableVC" forState:UIControlStateNormal];
+    [btn setTitle:@"router://nvc_TableVC" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(goTableVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
@@ -60,7 +60,7 @@
 }
 - (void)goTableVC
 {
-    [[XYRouter sharedInstance] openPath:@"router://TableVC"];
+    [[XYRouter sharedInstance] openPath:@"router://nvc_TableVC"];
 }
 
 @end
