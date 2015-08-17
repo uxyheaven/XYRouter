@@ -60,3 +60,18 @@ path还支持相对路径, 如下面的代码可以在当前目录下push出一�
 * 在上一个目录push `../`
 *  在根目录根push ` /`
 
+### Assigning parameters
+在跳转的时候还可以传递参数
+
+```
+@interface TestVC1 : UIViewController
+@property (nonatomic, assign) NSInteger i;
+@property (nonatomic, copy) NSString *str1;
+@property (nonatomic, copy) NSString *str2;
+@end
+
+[[XYRouter sharedInstance] openPath:@"TestVC1?str1=a&str2=2&i=1"];
+```
+
+
+
