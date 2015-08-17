@@ -58,7 +58,7 @@
 
 - (void)back
 {
-   // [self uxy_popViewControllerAnimated:YES completion:nil];
+    [[XYRouter sharedInstance] openPath:@"../"];
 }
 
 
