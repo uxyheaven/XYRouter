@@ -23,20 +23,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    /*
-    [[XYRouter shared] openUrl:@"a/b"];
-    
-    [[XYRouter shared] openUrl:@"/a/b"];
-    
-    [[XYRouter shared] openUrl:@"./a/b"];
-    
-    [[XYRouter shared] openUrl:@"../a/b"];
-    
-    [[XYRouter shared] openUrl:@"/c./d"];
-    
-    [[XYRouter shared] openUrl:@"www.baidu.com/a/b/c.php"];
-    */
-    
+
     [[XYRouter sharedInstance] mapKey:@"aaa" toControllerClassName:@"UIViewController"];
     
     NSNumber *n = [NSNumber numberWithDouble:1];
