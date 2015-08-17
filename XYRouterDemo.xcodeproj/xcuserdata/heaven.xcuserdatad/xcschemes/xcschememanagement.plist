@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>XYRouter.xcscheme</key>
+		<key>XYRouterDemo.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,12 +12,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>57CF31E61A6F9EC200F6A9AE</key>
+		<key>57E8B8321B81BDF3000A2F99</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>57CF31FF1A6F9EC200F6A9AE</key>
+		<key>57E8B84B1B81BDF3000A2F99</key>
 		<dict>
 			<key>primary</key>
 			<true/>

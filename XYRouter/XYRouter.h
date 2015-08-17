@@ -22,7 +22,7 @@ typedef enum
     // XYRouteUrlType_push,                     // 在当前目录push               : 空
 }XYRouteType;
 
-typedef UIViewController *(^XYRouterBlock)();
+typedef UIViewController *  (^XYRouterBlock)();
 
 @interface XYRouter : NSObject
 

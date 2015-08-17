@@ -1,19 +1,19 @@
 //
-//  XYRouterTests.m
-//  XYRouterTests
+//  XYRouterDemoTests.m
+//  XYRouterDemoTests
 //
-//  Created by heaven on 15/1/21.
-//  Copyright (c) 2015年 heaven. All rights reserved.
+//  Created by Heaven on 15/8/17.
+//  Copyright (c) 2015年 Heaven. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-@interface XYRouterTests : XCTestCase
+@interface XYRouterDemoTests : XCTestCase
 
 @end
 
-@implementation XYRouterTests
+@implementation XYRouterDemoTests
 
 - (void)setUp {
     [super setUp];

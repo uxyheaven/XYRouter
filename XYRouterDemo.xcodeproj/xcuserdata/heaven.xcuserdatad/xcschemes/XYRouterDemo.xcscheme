@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0610"
+   LastUpgradeVersion = "0640"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "57CF31E61A6F9EC200F6A9AE"
-               BuildableName = "XYRouter.app"
-               BlueprintName = "XYRouter"
-               ReferencedContainer = "container:XYRouter.xcodeproj">
+               BlueprintIdentifier = "57E8B8321B81BDF3000A2F99"
+               BuildableName = "XYRouterDemo.app"
+               BlueprintName = "XYRouterDemo"
+               ReferencedContainer = "container:XYRouterDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -28,10 +28,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "57CF31FF1A6F9EC200F6A9AE"
-               BuildableName = "XYRouterTests.xctest"
-               BlueprintName = "XYRouterTests"
-               ReferencedContainer = "container:XYRouter.xcodeproj">
+               BlueprintIdentifier = "57E8B84B1B81BDF3000A2F99"
+               BuildableName = "XYRouterDemoTests.xctest"
+               BlueprintName = "XYRouterDemoTests"
+               ReferencedContainer = "container:XYRouterDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,20 +46,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "57CF31FF1A6F9EC200F6A9AE"
-               BuildableName = "XYRouterTests.xctest"
-               BlueprintName = "XYRouterTests"
-               ReferencedContainer = "container:XYRouter.xcodeproj">
+               BlueprintIdentifier = "57E8B84B1B81BDF3000A2F99"
+               BuildableName = "XYRouterDemoTests.xctest"
+               BlueprintName = "XYRouterDemoTests"
+               ReferencedContainer = "container:XYRouterDemo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "57CF31E61A6F9EC200F6A9AE"
-            BuildableName = "XYRouter.app"
-            BlueprintName = "XYRouter"
-            ReferencedContainer = "container:XYRouter.xcodeproj">
+            BlueprintIdentifier = "57E8B8321B81BDF3000A2F99"
+            BuildableName = "XYRouterDemo.app"
+            BlueprintName = "XYRouterDemo"
+            ReferencedContainer = "container:XYRouterDemo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -72,13 +72,14 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "57CF31E61A6F9EC200F6A9AE"
-            BuildableName = "XYRouter.app"
-            BlueprintName = "XYRouter"
-            ReferencedContainer = "container:XYRouter.xcodeproj">
+            BlueprintIdentifier = "57E8B8321B81BDF3000A2F99"
+            BuildableName = "XYRouterDemo.app"
+            BlueprintName = "XYRouterDemo"
+            ReferencedContainer = "container:XYRouterDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -90,13 +91,14 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "57CF31E61A6F9EC200F6A9AE"
-            BuildableName = "XYRouter.app"
-            BlueprintName = "XYRouter"
-            ReferencedContainer = "container:XYRouter.xcodeproj">
+            BlueprintIdentifier = "57E8B8321B81BDF3000A2F99"
+            BuildableName = "XYRouterDemo.app"
+            BlueprintName = "XYRouterDemo"
+            ReferencedContainer = "container:XYRouterDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
