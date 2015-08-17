@@ -181,43 +181,28 @@
     // 先看需求pop一些vc
     [self __handlePopViewControllerByComponents:components atNavigationController:nvc];
     
-    // 只有一个路径直接push
-    if (components.count == 1)
+    // 多个路径先无动画push中间的vc
+    for (NSInteger i = 0; i < components.count - 1; i++)
     {
-        UIViewController *vc = [self viewControllerForKey:[components lastObject]];
+        if ([components[i] isEqualToString:@"."] ||
+            [components[i] isEqualToString:@".."]
+            ) continue;
+        
+        UIViewController *vc = [self viewControllerForKey:components[i]];
         if ([vc isKindOfClass:[UINavigationController class]])
         {
             vc = ((UINavigationController *)vc).topViewController;
         }
-        [self __pushViewController:vc parameters:queryDictonary atNavigationController:nvc animated:YES];
-        return;
+        [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:NO];
     }
     
-    // 多个路径先无动画push中间的vc, 最后在push最后的vc
-    if (components.count > 1)
+    // 最后在push最后的vc
+    UIViewController *vc = [self viewControllerForKey:[components lastObject]];
+    if ([vc isKindOfClass:[UINavigationController class]])
     {
-        for (NSInteger i = 0; i < components.count - 1; i++)
-        {
-            if ([components[i] isEqualToString:@"."] ||
-                [components[i] isEqualToString:@".."]
-                ) continue;
-            
-            UIViewController *vc = [self viewControllerForKey:components[i]];
-            if ([vc isKindOfClass:[UINavigationController class]])
-            {
-                vc = ((UINavigationController *)vc).topViewController;
-            }
-            [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:NO];
-        }
-        
-        UIViewController *vc = [self viewControllerForKey:[components lastObject]];
-        if ([vc isKindOfClass:[UINavigationController class]])
-        {
-            vc = ((UINavigationController *)vc).topViewController;
-        }
-        [self __pushViewController:vc parameters:queryDictonary atNavigationController:nvc animated:YES];
-        return;
+        vc = ((UINavigationController *)vc).topViewController;
     }
+    [self __pushViewController:vc parameters:queryDictonary atNavigationController:nvc animated:YES];
 }
 
 + (UINavigationController *)visibleNavigationController
