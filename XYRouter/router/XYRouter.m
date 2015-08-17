@@ -187,7 +187,8 @@
     [self __handlePopViewControllerByComponents:components atNavigationController:nvc];
     
     // 多个路径先无动画push中间的vc
-    for (NSInteger i = 0; i < components.count - 1; i++)
+    NSInteger start = [self lastSameComponentWithComponents:components viewControllers:nvc.viewControllers] + 1;
+    for (NSInteger i = start; i < components.count - 1; i++)
     {
         if ([components[i] isEqualToString:@"."] || [components[i] isEqualToString:@".."]) continue;
         
@@ -294,7 +295,9 @@
     }
     else if (type == XYRouteUrlType_pushAfterGotoRoot)
     {
-        [navigationController popToRootViewControllerAnimated:animated];
+        NSInteger last = [self lastSameComponentWithComponents:components viewControllers:navigationController.viewControllers];
+        UIViewController *vc = navigationController.viewControllers[last];
+        [navigationController popToViewController:vc animated:animated];
     }
 }
 
@@ -305,12 +308,12 @@
     NSInteger result = 0;
     for (NSInteger i = 1; i < max; i++)
     {
-        // NSLog(@"%@ %@", components[i], [vcs[i] uxy_pathComponent]);
         if (![components[i] isEqualToString:[vcs[i] uxy_pathComponent]])
         {
             result = i - 1;
             break;
         }
+        result = i;
     }
     
     return result;

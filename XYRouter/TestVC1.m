@@ -15,7 +15,10 @@
 @end
 
 @implementation TestVC1
-
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

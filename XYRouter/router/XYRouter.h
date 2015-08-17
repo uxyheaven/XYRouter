@@ -10,7 +10,6 @@
 #import <UIKit/UIKit.h>
 
 /* todo
- * path改变时候检查已有的path, 无需重新生成
  * host改变的时候nav的问题
  */
 
