@@ -1,5 +1,5 @@
 # XYRouter
-XYRouter是通过url routing来解决UIViewController跳转依赖的类.
+XYRouter是一个通过url routing来解决UIViewController跳转依赖的类.
 * 本类采用ARC
 
 ## Installation
