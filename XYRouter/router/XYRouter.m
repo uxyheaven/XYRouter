@@ -154,7 +154,14 @@
         vc = objBlock();
     }
     
-    vc.uxy_pathComponent = key;
+    if ([vc isKindOfClass:[UINavigationController class]])
+    {
+        ((UINavigationController *)vc).visibleViewController.uxy_pathComponent = key;
+    }
+    else
+    {
+        vc.uxy_pathComponent = key;
+    }
     
     return vc;
 }
@@ -176,6 +183,11 @@
         // todo 处理host改变的情况
     }
     
+    if (components.count == 0)
+    {
+        return;
+    }
+    
     UINavigationController *nvc = [[self class] __visibleNavigationController];
     
     // 先看需求pop一些vc
@@ -184,24 +196,14 @@
     // 多个路径先无动画push中间的vc
     for (NSInteger i = 0; i < components.count - 1; i++)
     {
-        if ([components[i] isEqualToString:@"."] ||
-            [components[i] isEqualToString:@".."]
-            ) continue;
+        if ([components[i] isEqualToString:@"."] || [components[i] isEqualToString:@".."]) continue;
         
         UIViewController *vc = [self viewControllerForKey:components[i]];
-        if ([vc isKindOfClass:[UINavigationController class]])
-        {
-            vc = ((UINavigationController *)vc).topViewController;
-        }
         [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:NO];
     }
     
     // 最后在push最后的vc
     UIViewController *vc = [self viewControllerForKey:[components lastObject]];
-    if ([vc isKindOfClass:[UINavigationController class]])
-    {
-        vc = ((UINavigationController *)vc).topViewController;
-    }
     [self __pushViewController:vc parameters:queryDictonary atNavigationController:nvc animated:YES];
 }
 
@@ -323,7 +325,7 @@
 
 - (void)__pushViewController:(UIViewController *)viewController parameters:(NSDictionary *)parameters atNavigationController:(UINavigationController *)navigationController animated:(BOOL)animated
 {
-    if (viewController == nil || navigationController == nil) return;
+    if (viewController == nil || [viewController isKindOfClass:[UINavigationController class]] || navigationController == nil) return;
     
     [navigationController pushViewController:viewController animated:animated];
     [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {

@@ -53,7 +53,7 @@
               @{@"title" : @"TestVC1/TableVC/TestVC1"},
               @{@"title" : @"TestVC1?str1=a&str2=2&i=1"},
               @{@"title" : @"router://TestVC2"},
-              @{@"title" : @"router://TestVC2/TestVC1"},
+              @{@"title" : @"router://nvc_TableVC/TestVC1"},
               @{@"title" : @"router://TableVC/TestVC1?str1=a&str2=2&i=1"}
               ];
     
@@ -145,8 +145,12 @@
 #pragma mark -
 - (void)registerViewControllers
 {
-    [[XYRouter sharedInstance] mapKey:@"aa" toControllerClassName:@"TableVC"];
-    [[XYRouter sharedInstance] mapKey:@"bb" toControllerClassName:@"TableVC"];
+    [[XYRouter sharedInstance] mapKey:@"nvc_TableVC" toBlock:^UIViewController *{
+        TableViewController *vc = [[TableViewController alloc] init];
+        UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+        return nvc;
+    }];
+    
 }
 
 - (void)clickCompose
