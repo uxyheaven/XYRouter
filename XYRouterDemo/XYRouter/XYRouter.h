@@ -9,10 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-/* todo
- * host改变的时候nav的问题
- */
-
 typedef enum
 {
     XYRouteUrlType_invalid,                     // 无效
