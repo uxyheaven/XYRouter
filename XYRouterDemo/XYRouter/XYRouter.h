@@ -31,6 +31,7 @@ typedef UIViewController *  (^XYRouterBlock)();
 - (void)mapKey:(NSString *)key toControllerInstance:(UIViewController *)viewController;
 - (void)mapKey:(NSString *)key toBlock:(XYRouterBlock)block;
 
+// 当取出ViewController的时候, 如果有单例[ViewController sharedInstance], 默认返回单例, 如果没有, 返回[[ViewController alloc] init].
 - (id)viewControllerForKey:(NSString *)key;
 
 - (void)openUrlString:(NSString *)urlString;
@@ -39,6 +40,7 @@ typedef UIViewController *  (^XYRouterBlock)();
 + (UINavigationController *)visibleNavigationController;
 
 @end
+
 #pragma mark -
 
 @interface UIViewController (XYRouter)
