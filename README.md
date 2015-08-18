@@ -91,12 +91,16 @@ path还支持相对路径, 如下面的代码可以在当前目录下push出一�
 可以用scheme:modal来呈现一个模态视图
 
 ```
+// rootViewController : nvc_TableVC
+[[XYRouter sharedInstance] openUrlString:@"modal://nvc_TableVC/TestModalVC/"];
+
 // rootViewController : TestModalVC
-[[XYRouter sharedInstance] openUrlString:@"modal://TestModalVC/"];
+[[XYRouter sharedInstance] openUrlString:@"modal://TestModalVC/?str1=a&str2=2&i=1"];
 ```
 
 #### Dismissing rootViewController
 关闭这个模态视图直接用dismiss
+
 ```
 [[XYRouter sharedInstance] openUrlString:@"dismiss"];
 ```
