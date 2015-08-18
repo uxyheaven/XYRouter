@@ -8,7 +8,7 @@
 
 #import "TableViewController.h"
 #import "XYRouter.h"
-#import "ViewController+nvcItem.h"
+#import "UIViewController+nvcItem.h"
 
 @interface TableViewController ()
 @property (nonatomic, strong) NSArray *list;
@@ -57,9 +57,13 @@
               @{@"title" : @"/"},
               @{@"title" : @"TestVC1/TableVC/TestVC1"},
               @{@"title" : @"TestVC1?str1=a&str2=2&i=1"},
-              @{@"title" : @"router://TestVC2"},
-              @{@"title" : @"router://nvc_TableVC/TestVC1"},
-              @{@"title" : @"router://nvc_TableVC/TestVC1?str1=a&str2=2&i=1"}
+              @{@"title" : @"window://TestVC2/"},
+              @{@"title" : @"window://nvc_TableVC/"},
+              @{@"title" : @"window://nvc_TableVC/TestVC1"},
+              @{@"title" : @"window://nvc_TableVC/TestVC1?str1=a&str2=2&i=1"},
+              @{@"title" : @"modal://TestModalVC/"},
+              @{@"title" : @"modal://TestModalVC/?str1=a&str2=2&i=1"},
+              @{@"title" : @"modal://nvc_TableVC/TestModalVC/?str1=a&str2=2&i=1"}
               ];
     
     self.tableView.delegate = self;
@@ -98,7 +102,7 @@
     NSString *url = _list[indexPath.row][@"url"] ?: _list[indexPath.row][@"title"];
     if (url.length > 0)
     {
-        [[XYRouter sharedInstance] openPath:url];
+        [[XYRouter sharedInstance] openUrlString:url];
     }
     
     // [self uxy_pushViewController:vc params:nil animated:YES completion:nil];

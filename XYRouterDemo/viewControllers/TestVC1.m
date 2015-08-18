@@ -8,7 +8,7 @@
 
 #import "TestVC1.h"
 #import "XYRouter.h"
-#import "ViewController+nvcItem.h"
+#import "UIViewController+nvcItem.h"
 
 @interface TestVC1 ()
 
@@ -39,6 +39,8 @@
     [self.view addSubview:btn];
     
     [self addRightBarButtonItem];
+    
+    NSLog(@"%s, i = %@, str1 = %@, str2 = %@", __func__, @(_i), _str1, _str2);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,7 +60,7 @@
 
 - (void)back
 {
-    [[XYRouter sharedInstance] openPath:@"../"];
+    [[XYRouter sharedInstance] openUrlString:@"../"];
 }
 
 

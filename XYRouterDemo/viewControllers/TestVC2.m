@@ -8,7 +8,7 @@
 
 #import "TestVC2.h"
 #import "XYRouter.h"
-#import "ViewController+nvcItem.h"
+#import "UIViewController+nvcItem.h"
 
 @interface TestVC2 ()
 
@@ -32,12 +32,13 @@
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(0, 250, 200, 50);
-    [btn setTitle:@"router://nvc_TableVC" forState:UIControlStateNormal];
+    [btn setTitle:@"window://nvc_TableVC" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(goTableVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
     
     [self addRightBarButtonItem];
+    [self addPathButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,11 +57,11 @@
 */
 - (void)back
 {
-    [[XYRouter sharedInstance] openPath:@"../"];
+    [[XYRouter sharedInstance] openUrlString:@"../"];
 }
 - (void)goTableVC
 {
-    [[XYRouter sharedInstance] openPath:@"router://nvc_TableVC"];
+    [[XYRouter sharedInstance] openUrlString:@"window://nvc_TableVC"];
 }
 
 @end

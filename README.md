@@ -51,12 +51,12 @@ UIViewController *vc = [[XYRouter sharedInstance] viewControllerForKey:@"aaa"];
 你可以使用key去push出一个viewController
 
 ```
-[[XYRouter sharedInstance] openPath:@"aaa"];
+[[XYRouter sharedInstance] openUrlString:@"aaa"];
 ```
 path还支持相对路径, 如下面的代码可以在当前目录下push出一个TableVC后, 再push出TestVC1.
 
 ```
-[[XYRouter sharedInstance] openPath:@"./TableVC/TestVC1"];
+[[XYRouter sharedInstance] openUrlString:@"./TableVC/TestVC1"];
 
 ```
 
@@ -76,15 +76,27 @@ path还支持相对路径, 如下面的代码可以在当前目录下push出一�
 @property (nonatomic, copy) NSString *str2;
 @end
 
-[[XYRouter sharedInstance] openPath:@"TestVC1?str1=a&str2=2&i=1"];
+[[XYRouter sharedInstance] openUrlString:@"TestVC1?str1=a&str2=2&i=1"];
 ```
 
 #### Changing rootViewController
-可以用完整的路径替换windows.rootViewController
+可以用scheme:window替换windows.rootViewController
 
 ```
 // rootViewController : nvc_TableVC
-[[XYRouter sharedInstance] openPath:@"router://nvc_TableVC/TestVC1"];
+[[XYRouter sharedInstance] openUrlString:@"window://nvc_TableVC/TestVC1"];
 ```
 
+#### Presenting rootViewController
+可以用scheme:modal来呈现一个模态视图
 
+```
+// rootViewController : TestModalVC
+[[XYRouter sharedInstance] openUrlString:@"modal://TestModalVC/"];
+```
+
+#### Dismissing rootViewController
+关闭这个模态视图直接用dismiss
+```
+[[XYRouter sharedInstance] openUrlString:@"dismiss"];
+```

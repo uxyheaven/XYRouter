@@ -14,12 +14,13 @@
 		57E8B8471B81BDF3000A2F99 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E8B8451B81BDF3000A2F99 /* LaunchScreen.xib */; };
 		57E8B8531B81BDF3000A2F99 /* XYRouterDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B8521B81BDF3000A2F99 /* XYRouterDemoTests.m */; };
 		57E8B85F1B81BE5F000A2F99 /* XYRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B85E1B81BE5F000A2F99 /* XYRouter.m */; };
-		57E8B8651B81BEC5000A2F99 /* ViewController+nvcItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B8621B81BEC5000A2F99 /* ViewController+nvcItem.m */; };
+		57E8B8651B81BEC5000A2F99 /* UIViewController+nvcItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B8621B81BEC5000A2F99 /* UIViewController+nvcItem.m */; };
 		57E8B8661B81BEC5000A2F99 /* XYTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B8641B81BEC5000A2F99 /* XYTransitioning.m */; };
 		57E8B86E1B81BECE000A2F99 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B8691B81BECE000A2F99 /* TableViewController.m */; };
 		57E8B86F1B81BECE000A2F99 /* TestVC1.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B86B1B81BECE000A2F99 /* TestVC1.m */; };
 		57E8B8701B81BECE000A2F99 /* TestVC2.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B86D1B81BECE000A2F99 /* TestVC2.m */; };
 		57E8B8721B81BEF8000A2F99 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 57E8B8711B81BEF8000A2F99 /* manifest.json */; };
+		57F0FC471B82C30200917062 /* TestModalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 57F0FC461B82C30200917062 /* TestModalVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,8 +48,8 @@
 		57E8B8521B81BDF3000A2F99 /* XYRouterDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYRouterDemoTests.m; sourceTree = "<group>"; };
 		57E8B85D1B81BE5F000A2F99 /* XYRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYRouter.h; sourceTree = "<group>"; };
 		57E8B85E1B81BE5F000A2F99 /* XYRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYRouter.m; sourceTree = "<group>"; };
-		57E8B8611B81BEC5000A2F99 /* ViewController+nvcItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+nvcItem.h"; sourceTree = "<group>"; };
-		57E8B8621B81BEC5000A2F99 /* ViewController+nvcItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+nvcItem.m"; sourceTree = "<group>"; };
+		57E8B8611B81BEC5000A2F99 /* UIViewController+nvcItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+nvcItem.h"; sourceTree = "<group>"; };
+		57E8B8621B81BEC5000A2F99 /* UIViewController+nvcItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+nvcItem.m"; sourceTree = "<group>"; };
 		57E8B8631B81BEC5000A2F99 /* XYTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYTransitioning.h; sourceTree = "<group>"; };
 		57E8B8641B81BEC5000A2F99 /* XYTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYTransitioning.m; sourceTree = "<group>"; };
 		57E8B8681B81BECE000A2F99 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
@@ -58,6 +59,8 @@
 		57E8B86C1B81BECE000A2F99 /* TestVC2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC2.h; sourceTree = "<group>"; };
 		57E8B86D1B81BECE000A2F99 /* TestVC2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC2.m; sourceTree = "<group>"; };
 		57E8B8711B81BEF8000A2F99 /* manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
+		57F0FC451B82C30200917062 /* TestModalVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestModalVC.h; sourceTree = "<group>"; };
+		57F0FC461B82C30200917062 /* TestModalVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestModalVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,8 +154,8 @@
 		57E8B8601B81BEC5000A2F99 /* helper */ = {
 			isa = PBXGroup;
 			children = (
-				57E8B8611B81BEC5000A2F99 /* ViewController+nvcItem.h */,
-				57E8B8621B81BEC5000A2F99 /* ViewController+nvcItem.m */,
+				57E8B8611B81BEC5000A2F99 /* UIViewController+nvcItem.h */,
+				57E8B8621B81BEC5000A2F99 /* UIViewController+nvcItem.m */,
 				57E8B8631B81BEC5000A2F99 /* XYTransitioning.h */,
 				57E8B8641B81BEC5000A2F99 /* XYTransitioning.m */,
 			);
@@ -169,6 +172,8 @@
 				57E8B86B1B81BECE000A2F99 /* TestVC1.m */,
 				57E8B86C1B81BECE000A2F99 /* TestVC2.h */,
 				57E8B86D1B81BECE000A2F99 /* TestVC2.m */,
+				57F0FC451B82C30200917062 /* TestModalVC.h */,
+				57F0FC461B82C30200917062 /* TestModalVC.m */,
 			);
 			path = viewControllers;
 			sourceTree = "<group>";
@@ -276,11 +281,12 @@
 				57E8B83F1B81BDF3000A2F99 /* ViewController.m in Sources */,
 				57E8B83C1B81BDF3000A2F99 /* AppDelegate.m in Sources */,
 				57E8B8391B81BDF3000A2F99 /* main.m in Sources */,
-				57E8B8651B81BEC5000A2F99 /* ViewController+nvcItem.m in Sources */,
+				57E8B8651B81BEC5000A2F99 /* UIViewController+nvcItem.m in Sources */,
 				57E8B8661B81BEC5000A2F99 /* XYTransitioning.m in Sources */,
 				57E8B86E1B81BECE000A2F99 /* TableViewController.m in Sources */,
 				57E8B8701B81BECE000A2F99 /* TestVC2.m in Sources */,
 				57E8B86F1B81BECE000A2F99 /* TestVC1.m in Sources */,
+				57F0FC471B82C30200917062 /* TestModalVC.m in Sources */,
 				57E8B85F1B81BE5F000A2F99 /* XYRouter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

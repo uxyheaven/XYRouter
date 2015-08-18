@@ -37,7 +37,7 @@ typedef UIViewController *  (^XYRouterBlock)();
 
 - (id)viewControllerForKey:(NSString *)key;
 
-- (void)openPath:(NSString *)path;
+- (void)openUrlString:(NSString *)urlString;
 
 /// 默认有个返回实际显示navigationController的方法. 你也可以在子类重写这个方法返回你期望的 navigationController
 + (UINavigationController *)visibleNavigationController;

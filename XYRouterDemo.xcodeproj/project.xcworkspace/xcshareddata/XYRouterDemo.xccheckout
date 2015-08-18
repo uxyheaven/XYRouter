@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>7D19915D-5D0E-4564-89F1-AC02AF4F0059</string>
 	<key>IDESourceControlProjectName</key>
-	<string>XYRouterDemo</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>CE32A1579F102856EA87EAB7BD79756C94FDA7A9</key>
 		<string>https://github.com/uxyheaven/XYRouter.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>XYRouterDemo.xcodeproj</string>
+	<string>XYRouterDemo.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>CE32A1579F102856EA87EAB7BD79756C94FDA7A9</key>

@@ -1,5 +1,5 @@
 //
-//  ViewController+nvcItem.h
+//  UIViewController+nvcItem.h
 //  XYRouter
 //
 //  Created by Heaven on 15/8/17.
@@ -11,5 +11,6 @@
 @interface UIViewController (nvcItem)
 
 - (void)addRightBarButtonItem;
+- (void)addPathButton;
 
 @end
