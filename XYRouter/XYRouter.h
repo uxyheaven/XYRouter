@@ -9,10 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-/* todo
- * host改变的时候nav的问题
- */
-
 typedef enum
 {
     XYRouteUrlType_invalid,                     // 无效
@@ -35,17 +31,22 @@ typedef UIViewController *  (^XYRouterBlock)();
 - (void)mapKey:(NSString *)key toControllerInstance:(UIViewController *)viewController;
 - (void)mapKey:(NSString *)key toBlock:(XYRouterBlock)block;
 
+// 当取出ViewController的时候, 如果有单例[ViewController sharedInstance], 默认返回单例, 如果没有, 返回[[ViewController alloc] init].
 - (id)viewControllerForKey:(NSString *)key;
 
-- (void)openPath:(NSString *)path;
+- (void)openUrlString:(NSString *)urlString;
 
 /// 默认有个返回实际显示navigationController的方法. 你也可以在子类重写这个方法返回你期望的 navigationController
 + (UINavigationController *)visibleNavigationController;
 
 @end
-#pragma mark -
 
+#pragma mark - UIViewController (XYRouter)
 @interface UIViewController (XYRouter)
 @property (nonatomic, copy, readonly) NSString *uxy_pathComponent;
 @end
+
+
+
+
 
