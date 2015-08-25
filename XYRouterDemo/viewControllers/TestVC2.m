@@ -57,11 +57,11 @@
 */
 - (void)back
 {
-    [[XYRouter sharedInstance] openUrlString:@"../"];
+    [[XYRouter sharedInstance] openURLString:@"../"];
 }
 - (void)goTableVC
 {
-    [[XYRouter sharedInstance] openUrlString:@"window://nvc_TableVC"];
+    [[XYRouter sharedInstance] openURLString:@"window://nvc_TableVC"];
 }
 
 @end

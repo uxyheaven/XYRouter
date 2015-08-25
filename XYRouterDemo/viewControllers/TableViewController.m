@@ -99,10 +99,10 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *url = _list[indexPath.row][@"url"] ?: _list[indexPath.row][@"title"];
+    NSString *url = _list[indexPath.row][@"URL"] ?: _list[indexPath.row][@"title"];
     if (url.length > 0)
     {
-        [[XYRouter sharedInstance] openUrlString:url];
+        [[XYRouter sharedInstance] openURLString:url];
     }
     
     // [self uxy_pushViewController:vc params:nil animated:YES completion:nil];

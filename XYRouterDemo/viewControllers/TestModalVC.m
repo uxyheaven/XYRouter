@@ -42,7 +42,7 @@
 
 - (void)clickDismiss
 {
-    [[XYRouter sharedInstance] openUrlString:@"dismiss"];
+    [[XYRouter sharedInstance] openURLString:@"dismiss"];
 }
 
 @end

@@ -11,11 +11,11 @@
 
 typedef enum
 {
-    XYRouteUrlType_invalid,                     // 无效
-    XYRouteUrlType_push,                        // 在当前目录push               : ./
-    XYRouteUrlType_pushAfterPop,                // 在上一个目录push             : ../
-    XYRouteUrlType_pushAfterGotoRoot,           // 在根目录根push               : /
-    // XYRouteUrlType_push,                     // 在当前目录push               : 空
+    XYRouteURLType_invalid,                     // 无效
+    XYRouteURLType_push,                        // 在当前目录push               : ./
+    XYRouteURLType_pushAfterPop,                // 在上一个目录push             : ../
+    XYRouteURLType_pushAfterGotoRoot,           // 在根目录根push               : /
+    // XYRouteURLType_push,                     // 在当前目录push               : 空
 }XYRouteType;
 
 typedef UIViewController *  (^XYRouterBlock)();
@@ -34,16 +34,17 @@ typedef UIViewController *  (^XYRouterBlock)();
 // 当取出ViewController的时候, 如果有单例[ViewController sharedInstance], 默认返回单例, 如果没有, 返回[[ViewController alloc] init].
 - (id)viewControllerForKey:(NSString *)key;
 
-- (void)openUrlString:(NSString *)urlString;
+- (void)openURLString:(NSString *)URLString;
 
-/// 默认有个返回实际显示navigationController的方法. 你也可以在子类重写这个方法返回你期望的 navigationController
-+ (UINavigationController *)visibleNavigationController;
-
+#pragma mark - override
+/// 默认有个返回实际显示navigationController的方法. 你也可以在重写这个方法,以返回你期望的 navigationController
++ (UINavigationController *)expectedVisibleNavigationController;
 @end
+
 
 #pragma mark - UIViewController (XYRouter)
 @interface UIViewController (XYRouter)
-@property (nonatomic, copy, readonly) NSString *uxy_pathComponent;
+@property (nonatomic, copy, readonly) NSString *uxy_URLPath;
 @end
 
 

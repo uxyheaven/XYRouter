@@ -60,7 +60,7 @@
 
 - (void)back
 {
-    [[XYRouter sharedInstance] openUrlString:@"../"];
+    [[XYRouter sharedInstance] openURLString:@"../"];
 }
 
 

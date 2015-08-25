@@ -1,5 +1,5 @@
 # XYRouter
-XYRouter是一个通过url routing来解决UIViewController跳转依赖的类.
+XYRouter是一个通过URL routing来解决UIViewController跳转依赖的类.
 * 本类采用ARC
 
 ## Installation
@@ -51,12 +51,12 @@ UIViewController *vc = [[XYRouter sharedInstance] viewControllerForKey:@"aaa"];
 你可以使用key去push出一个viewController
 
 ```
-[[XYRouter sharedInstance] openUrlString:@"aaa"];
+[[XYRouter sharedInstance] openURLString:@"aaa"];
 ```
 path还支持相对路径, 如下面的代码可以在当前目录下push出一个TableVC后, 再push出TestVC1.
 
 ```
-[[XYRouter sharedInstance] openUrlString:@"./TableVC/TestVC1"];
+[[XYRouter sharedInstance] openURLString:@"./TableVC/TestVC1"];
 
 ```
 
@@ -76,7 +76,7 @@ path还支持相对路径, 如下面的代码可以在当前目录下push出一�
 @property (nonatomic, copy) NSString *str2;
 @end
 
-[[XYRouter sharedInstance] openUrlString:@"TestVC1?str1=a&str2=2&i=1"];
+[[XYRouter sharedInstance] openURLString:@"TestVC1?str1=a&str2=2&i=1"];
 ```
 
 #### Changing rootViewController
@@ -84,7 +84,7 @@ path还支持相对路径, 如下面的代码可以在当前目录下push出一�
 
 ```
 // rootViewController : nvc_TableVC
-[[XYRouter sharedInstance] openUrlString:@"window://nvc_TableVC/TestVC1"];
+[[XYRouter sharedInstance] openURLString:@"window://nvc_TableVC/TestVC1"];
 ```
 
 #### Presenting rootViewController
@@ -92,15 +92,15 @@ path还支持相对路径, 如下面的代码可以在当前目录下push出一�
 
 ```
 // rootViewController : nvc_TableVC
-[[XYRouter sharedInstance] openUrlString:@"modal://nvc_TableVC/TestModalVC/"];
+[[XYRouter sharedInstance] openURLString:@"modal://nvc_TableVC/TestModalVC/"];
 
 // rootViewController : TestModalVC
-[[XYRouter sharedInstance] openUrlString:@"modal://TestModalVC/?str1=a&str2=2&i=1"];
+[[XYRouter sharedInstance] openURLString:@"modal://TestModalVC/?str1=a&str2=2&i=1"];
 ```
 
 #### Dismissing rootViewController
 关闭这个模态视图直接用dismiss
 
 ```
-[[XYRouter sharedInstance] openUrlString:@"dismiss"];
+[[XYRouter sharedInstance] openURLString:@"dismiss"];
 ```

@@ -15,7 +15,7 @@
 @end
 #pragma mark - UIViewController_private
 @interface UIViewController (UIViewController_private)
-@property (nonatomic, copy) NSString *uxy_pathComponent;
+@property (nonatomic, copy) NSString *uxy_URLPath;
 @end
 
 #pragma mark -
@@ -53,22 +53,23 @@
     }
     return self;
 }
+
 - (NSString *)currentPath
 {
     if (_isPathCacheChanged)
     {
         __block NSString *string = @"";
-        UINavigationController *nvc = [[self class] __visibleNavigationController];
+        UINavigationController *nvc = [[self class] __expectedVisibleNavigationController];
         if (nvc)
         {
             [nvc.viewControllers enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL *stop) {
-                string = [NSString stringWithFormat:@"%@/%@", string, vc.uxy_pathComponent];
+                string = [NSString stringWithFormat:@"%@/%@", string, vc.uxy_URLPath];
             }];
         }
         else
         {
             UIViewController *vc = [[self class] __visibleViewController];
-            string = [NSString stringWithFormat:@"%@/%@", string, vc.uxy_pathComponent];
+            string = [NSString stringWithFormat:@"%@/%@", string, vc.uxy_URLPath];
         }
 
         _currentPath = string;
@@ -76,8 +77,6 @@
     
     return _currentPath;
 }
-
-
 
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className
 {
@@ -151,46 +150,46 @@
     
     if ([vc isKindOfClass:[UINavigationController class]])
     {
-        ((UINavigationController *)vc).visibleViewController.uxy_pathComponent = key;
+        ((UINavigationController *)vc).visibleViewController.uxy_URLPath = key;
     }
     else
     {
-        vc.uxy_pathComponent = key;
+        vc.uxy_URLPath = key;
     }
     
     return vc;
 }
 
-- (void)openUrlString:(NSString *)urlString
+- (void)openURLString:(NSString *)URLString
 {
     // 处理模态dismiss
-    BOOL isChanged = [self __handleDismissWithUrlString:urlString];
+    BOOL isChanged = [self __handleDismissWithURLString:URLString];
     if (isChanged) return;
     
-    NSURL *url                   = [NSURL URLWithString:urlString];
-    NSArray *components          = [url pathComponents];
+    NSURL *url          = [NSURL URLWithString:URLString];
+    NSArray *components = [url pathComponents];
 #ifdef DEBUG
     NSString *scheme             = url.scheme;
     NSString *host               = url.host;
     NSString *parameterString    = url.parameterString;
 #endif
-    _isPathCacheChanged          = YES;
+    _isPathCacheChanged = YES;
     
-    isChanged = [self __handleModalWithUrl:url];
+    isChanged = [self __handleModalWithURL:url];
     
     if (isChanged)
     {
         // todo 处理modal的情况
     }
     
-    isChanged = [self __handleWindowWithUrl:url];
+    isChanged = [self __handleWindowWithURL:url];
     
     if (isChanged)
     {
         // todo 处理window.rootViewController改变的情况
     }
     
-    UINavigationController *nvc = [[self class] __visibleNavigationController];
+    UINavigationController *nvc = [[self class] __expectedVisibleNavigationController];
   //  if (nvc == nil || (components.count == 0)) return;
     
     // 先看需求pop一些vc
@@ -212,7 +211,7 @@
     [self __pushViewController:vc parameters:parameters atNavigationController:nvc animated:YES];
 }
 
-+ (UINavigationController *)visibleNavigationController
++ (UINavigationController *)expectedVisibleNavigationController
 {
     return (UINavigationController *)@"miss";
 }
@@ -222,23 +221,23 @@
 {
     if ([@"." isEqualToString:component])
     {
-        return XYRouteUrlType_push;
+        return XYRouteURLType_push;
     }
     else if ([@".." isEqualToString:component])
     {
-        return XYRouteUrlType_pushAfterPop;
+        return XYRouteURLType_pushAfterPop;
     }
     else if ([@"/" isEqualToString:component])
     {
-        return XYRouteUrlType_pushAfterGotoRoot;
+        return XYRouteURLType_pushAfterGotoRoot;
     }
     
-    return XYRouteUrlType_push;
+    return XYRouteURLType_push;
 }
 
-+ (UINavigationController *)__visibleNavigationController
++ (UINavigationController *)__expectedVisibleNavigationController
 {
-    UINavigationController *nvc = [[self class] visibleNavigationController];
+    UINavigationController *nvc = [[self class] expectedVisibleNavigationController];
     if ([nvc isKindOfClass:[UINavigationController class]])
     {
         return nvc;
@@ -280,18 +279,18 @@
     }
 }
 // 处理host改变的情况
-- (BOOL)__handleWindowWithUrl:(NSURL *)url
+- (BOOL)__handleWindowWithURL:(NSURL *)URL
 {
-    NSString *scheme = url.scheme;
-    NSString *host   = url.host;
+    NSString *scheme = URL.scheme;
+    NSString *host   = URL.host;
     
     if ([@"window" isEqualToString:scheme] && host.length > 0)
     {
         UIViewController *vc = [self viewControllerForKey:host];
-        NSArray *components          = [url pathComponents];
+        NSArray *components          = [URL pathComponents];
         if (components.count < 2)
         {
-            NSDictionary *queryDictonary = [self __dictionaryFromQuery:url.query];
+            NSDictionary *queryDictonary = [self __dictionaryFromQuery:URL.query];
             [queryDictonary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 // todo 安全性检查
                 [vc setValue:obj forKey:key];
@@ -305,9 +304,9 @@
 }
 
 // 处理dismiss模态视图
-- (BOOL)__handleDismissWithUrlString:(NSString *)urlString
+- (BOOL)__handleDismissWithURLString:(NSString *)URLString
 {
-    if ([@"dismiss" isEqualToString:urlString])
+    if ([@"dismiss" isEqualToString:URLString])
     {
         [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
         return YES;
@@ -317,19 +316,19 @@
 }
 
 // 处理模态视图
-- (BOOL)__handleModalWithUrl:(NSURL *)url
+- (BOOL)__handleModalWithURL:(NSURL *)URL
 {
-    NSString *scheme = url.scheme;
-    NSString *host   = url.host;
+    NSString *scheme = URL.scheme;
+    NSString *host   = URL.host;
     
     if ([@"modal" isEqualToString:scheme] && host.length > 0)
     {
         UIViewController *vc = [self viewControllerForKey:host];
-        NSArray *components          = [url pathComponents];
+        NSArray *components          = [URL pathComponents];
         BOOL animated = NO;
         if (components.count < 2)
         {
-            NSDictionary *queryDictonary = [self __dictionaryFromQuery:url.query];
+            NSDictionary *queryDictonary = [self __dictionaryFromQuery:URL.query];
             [queryDictonary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 // todo 安全性检查
                 [vc setValue:obj forKey:key];
@@ -354,14 +353,14 @@
         animated = YES;
     }
     
-    if (type == XYRouteUrlType_push)
+    if (type == XYRouteURLType_push)
     {
     }
-    else if (type == XYRouteUrlType_pushAfterPop)
+    else if (type == XYRouteURLType_pushAfterPop)
     {
         [navigationController popViewControllerAnimated:animated];
     }
-    else if (type == XYRouteUrlType_pushAfterGotoRoot)
+    else if (type == XYRouteURLType_pushAfterGotoRoot)
     {
         NSInteger last = [self lastSameComponentWithComponents:components viewControllers:navigationController.viewControllers];
         UIViewController *vc = navigationController.viewControllers[last];
@@ -376,7 +375,7 @@
     NSInteger result = 0;
     for (NSInteger i = 1; i < max; i++)
     {
-        if (![components[i] isEqualToString:[vcs[i] uxy_pathComponent]])
+        if (![components[i] isEqualToString:[vcs[i] uxy_URLPath]])
         {
             result = i - 1;
             break;
@@ -440,18 +439,18 @@
 @end
 
 #pragma mark -
-static const char *XYRouter_pathComponent = "UIViewController.pathComponent";
+static const char *XYRouter_URLPath = "XY.ViewController.URLPath";
 
 @implementation UIViewController (XYRouter)
 
-- (NSString *)uxy_pathComponent
+- (NSString *)uxy_URLPath
 {
-    return objc_getAssociatedObject(self, XYRouter_pathComponent);
+    return objc_getAssociatedObject(self, XYRouter_URLPath);
 }
 
-- (void)setUxy_pathComponent:(NSString *)uxy_pathComponent
+- (void)setUxy_URLPath:(NSString *)uxy_URLPath
 {
-    objc_setAssociatedObject(self, XYRouter_pathComponent, uxy_pathComponent, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, XYRouter_URLPath, uxy_URLPath, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 @end
