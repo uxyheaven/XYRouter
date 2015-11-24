@@ -63,13 +63,15 @@
         if (nvc)
         {
             [nvc.viewControllers enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL *stop) {
-                string = [NSString stringWithFormat:@"%@/%@", string, vc.uxy_URLPath];
+                NSString *tmp = string.length > 0 ? @"%@/%@" : @"%@%@";
+                string = [NSString stringWithFormat:tmp, string, vc.uxy_URLPath];
             }];
         }
         else
         {
             UIViewController *vc = [[self class] __visibleViewController];
-            string = [NSString stringWithFormat:@"%@/%@", string, vc.uxy_URLPath];
+            NSString *tmp = string.length > 0 ? @"%@/%@" : @"%@%@";
+            string = [NSString stringWithFormat:tmp, string, vc.uxy_URLPath];
         }
 
         _currentPath = string;
@@ -190,19 +192,22 @@
     }
     
     UINavigationController *nvc = [[self class] __expectedVisibleNavigationController];
-  //  if (nvc == nil || (components.count == 0)) return;
+    // if (nvc == nil || (components.count == 0)) return;
     
     // 先看需求pop一些vc
     [self __handlePopViewControllerByComponents:components atNavigationController:nvc];
     
     // 多个路径先无动画push中间的vc
-    NSInteger start = [self lastSameComponentWithComponents:components viewControllers:nvc.viewControllers] + 1;
-    for (NSInteger i = start; i < components.count - 1; i++)
+    if (components.count > 1)
     {
-        if ([components[i] isEqualToString:@"."] || [components[i] isEqualToString:@".."]) continue;
-        
-        UIViewController *vc = [self viewControllerForKey:components[i]];
-        [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:NO];
+        NSInteger start = [self lastSameComponentWithComponents:components viewControllers:nvc.viewControllers] + 1;
+        for (NSInteger i = start; i < components.count - 1; i++)
+        {
+            if ([components[i] isEqualToString:@"."] || [components[i] isEqualToString:@".."]) continue;
+            
+            UIViewController *vc = [self viewControllerForKey:components[i]];
+            [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:NO];
+        }
     }
     
     // 最后在push最后的vc
