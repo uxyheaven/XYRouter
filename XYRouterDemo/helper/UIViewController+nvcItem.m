@@ -33,4 +33,11 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:str delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles: nil];
     [alert show];
 }
+
+- (NSString *)description
+{
+    NSString *str = [super description];
+    str = [NSString stringWithFormat:@"%@", self.uxy_URLPath];
+    return str;
+}
 @end

@@ -13,4 +13,6 @@
 - (void)addRightBarButtonItem;
 - (void)addPathButton;
 
+- (NSString *)description;
+
 @end
