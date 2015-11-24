@@ -25,8 +25,6 @@
     // Do any additional setup after loading the view, typically from a nib.
 
     [[XYRouter sharedInstance] mapKey:@"aaa" toControllerClassName:@"UIViewController"];
-    
-    NSNumber *n = [NSNumber numberWithDouble:1];
 }
 
 - (void)didReceiveMemoryWarning {

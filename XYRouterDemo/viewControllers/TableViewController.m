@@ -15,24 +15,12 @@
 @end
 
 @implementation TableViewController
-/*
-+ (instancetype)sharedInstance
-{
-    static TableViewController *vc = nil;
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        if (!vc) {
-            vc = [[self alloc] init];
-        }
-    });
-    return vc;
-}
-*/
+
 - (void)dealloc
 {
     NSLog(@"%s", __func__);
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -66,7 +54,7 @@
               @{@"title" : @"modal://nvc_TableVC/TestModalVC/?str1=a&str2=2&i=1"}
               ];
     
-    self.tableView.delegate = self;
+    self.tableView.delegate   = self;
     self.tableView.dataSource = self;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"reuseIdentifier"];
     

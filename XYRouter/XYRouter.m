@@ -48,34 +48,35 @@
 {
     self = [super init];
     if (self) {
-        _map                = [@{} mutableCopy];
         _isPathCacheChanged = YES;
+        _map                = [@{} mutableCopy];
     }
     return self;
 }
 
 - (NSString *)currentPath
 {
-    if (_isPathCacheChanged)
+    if (!_isPathCacheChanged)
+        return _currentPath;
+
+    __block NSString *string = @"";
+    UINavigationController *nvc = [[self class] __expectedVisibleNavigationController];
+    
+    if (nvc)
     {
-        __block NSString *string = @"";
-        UINavigationController *nvc = [[self class] __expectedVisibleNavigationController];
-        if (nvc)
-        {
-            [nvc.viewControllers enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL *stop) {
-                NSString *tmp = string.length > 0 ? @"%@/%@" : @"%@%@";
-                string = [NSString stringWithFormat:tmp, string, vc.uxy_URLPath];
-            }];
-        }
-        else
-        {
-            UIViewController *vc = [[self class] __visibleViewController];
+        [nvc.viewControllers enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL *stop) {
             NSString *tmp = string.length > 0 ? @"%@/%@" : @"%@%@";
             string = [NSString stringWithFormat:tmp, string, vc.uxy_URLPath];
-        }
-
-        _currentPath = string;
+        }];
     }
+    else
+    {
+        UIViewController *vc = [[self class] __visibleViewController];
+        NSString *tmp = string.length > 0 ? @"%@/%@" : @"%@%@";
+        string = [NSString stringWithFormat:tmp, string, vc.uxy_URLPath];
+    }
+    
+    _currentPath = string;
     
     return _currentPath;
 }
@@ -166,7 +167,8 @@
 {
     // 处理模态dismiss
     BOOL isChanged = [self __handleDismissWithURLString:URLString];
-    if (isChanged) return;
+    if (isChanged)
+        return;
     
     NSURL *url          = [NSURL URLWithString:URLString];
     NSArray *components = [url pathComponents];
@@ -203,7 +205,8 @@
         NSInteger start = [self lastSameComponentWithComponents:components viewControllers:nvc.viewControllers] + 1;
         for (NSInteger i = start; i < components.count - 1; i++)
         {
-            if ([components[i] isEqualToString:@"."] || [components[i] isEqualToString:@".."]) continue;
+            if ([components[i] isEqualToString:@"."] || [components[i] isEqualToString:@".."])
+                continue;
             
             UIViewController *vc = [self viewControllerForKey:components[i]];
             [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:NO];
@@ -258,6 +261,7 @@
 + (UIViewController *)__visibleViewController
 {
     UIViewController *vc = [self __visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController];
+    
     return vc;
 }
 
@@ -289,35 +293,34 @@
     NSString *scheme = URL.scheme;
     NSString *host   = URL.host;
     
-    if ([@"window" isEqualToString:scheme] && host.length > 0)
-    {
-        UIViewController *vc = [self viewControllerForKey:host];
-        NSArray *components          = [URL pathComponents];
-        if (components.count < 2)
-        {
-            NSDictionary *queryDictonary = [self __dictionaryFromQuery:URL.query];
-            [queryDictonary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                // todo 安全性检查
-                [vc setValue:obj forKey:key];
-            }];
-        }
-        self.rootViewController = vc;
-        return YES;
-    }
+    if (![@"window" isEqualToString:scheme] || host.length == 0)
+        return NO;
+
     
-    return NO;
+    UIViewController *vc = [self viewControllerForKey:host];
+    NSArray *components  = [URL pathComponents];
+    if (components.count < 2)
+    {
+        NSDictionary *queryDictonary = [self __dictionaryFromQuery:URL.query];
+        [queryDictonary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            // todo 安全性检查
+            [vc setValue:obj forKey:key];
+        }];
+    }
+    self.rootViewController = vc;
+    
+    return YES;
 }
 
 // 处理dismiss模态视图
 - (BOOL)__handleDismissWithURLString:(NSString *)URLString
 {
-    if ([@"dismiss" isEqualToString:URLString])
-    {
-        [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
-        return YES;
-    }
+    if (![@"dismiss" isEqualToString:URLString])
+        return NO;
     
-    return NO;
+    [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
+    
+    return YES;
 }
 
 // 处理模态视图
@@ -326,25 +329,26 @@
     NSString *scheme = URL.scheme;
     NSString *host   = URL.host;
     
-    if ([@"modal" isEqualToString:scheme] && host.length > 0)
+    if (![@"modal" isEqualToString:scheme] || host.length == 0)
+        return NO;
+    
+    UIViewController *vc = [self viewControllerForKey:host];
+    NSArray *components  = [URL pathComponents];
+    BOOL animated        = NO;
+    
+    if (components.count < 2)
     {
-        UIViewController *vc = [self viewControllerForKey:host];
-        NSArray *components          = [URL pathComponents];
-        BOOL animated = NO;
-        if (components.count < 2)
-        {
-            NSDictionary *queryDictonary = [self __dictionaryFromQuery:URL.query];
-            [queryDictonary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                // todo 安全性检查
-                [vc setValue:obj forKey:key];
-            }];
-            animated = YES;
-        }
-        [self.rootViewController presentViewController:vc animated:animated completion:nil];
-        return YES;
+        NSDictionary *queryDictonary = [self __dictionaryFromQuery:URL.query];
+        [queryDictonary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            // todo 安全性检查
+            [vc setValue:obj forKey:key];
+        }];
+        animated = YES;
     }
     
-    return NO;
+    [self.rootViewController presentViewController:vc animated:animated completion:nil];
+    
+    return YES;
 }
 
 // 先看需求pop一些vc
@@ -393,7 +397,8 @@
 
 - (void)__pushViewController:(UIViewController *)viewController parameters:(NSDictionary *)parameters atNavigationController:(UINavigationController *)navigationController animated:(BOOL)animated
 {
-    if (viewController == nil || [viewController isKindOfClass:[UINavigationController class]] || navigationController == nil) return;
+    if (viewController == nil || [viewController isKindOfClass:[UINavigationController class]] || navigationController == nil)
+        return;
     
     [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         // todo 安全性检查
@@ -420,7 +425,8 @@
     for (NSString *keyValuePairString in array)
     {
         NSArray *keyValuePairArray = [keyValuePairString componentsSeparatedByString:@"="];
-        if ([keyValuePairArray count] < 2) continue;
+        if ([keyValuePairArray count] < 2)
+            continue;
         
         NSString *key   = [self __URLDecodingWithEncodingString:keyValuePairArray[0]];
         NSString *value = [self __URLDecodingWithEncodingString:keyValuePairArray[1]];
@@ -444,10 +450,11 @@
 @end
 
 #pragma mark -
-static const char *XYRouter_URLPath = "XY.ViewController.URLPath";
+
 
 @implementation UIViewController (XYRouter)
 
+static const char *XYRouter_URLPath = "XY.ViewController.URLPath";
 - (NSString *)uxy_URLPath
 {
     return objc_getAssociatedObject(self, XYRouter_URLPath);
