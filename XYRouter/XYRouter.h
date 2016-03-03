@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#undef	__XYROUTER_VERSION__
+#define	__XYROUTER_VERSION__	"0.6.5"	// 主版本号
+
 typedef enum
 {
     XYRouteURLType_invalid,                     // 无效
