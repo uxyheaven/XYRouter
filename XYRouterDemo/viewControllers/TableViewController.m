@@ -33,6 +33,12 @@
     
     self.title = @"tableView";
     
+    NSDictionary *dic = @{@"str" : @"aaa",
+                          @"你好" : @"世界",
+                          @"int" : @1};
+    NSData  *JSONData = [NSJSONSerialization dataWithJSONObject:dic options:kNilOptions error:nil];
+    NSString *JSONString = [[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding];
+
     _list = @[
               @{@"title" : @"./TableVC"},
               @{@"title" : @"../TableVC"},
@@ -51,7 +57,9 @@
               @{@"title" : @"window://nvc_TableVC/TestVC1?str1=a&str2=2&i=1"},
               @{@"title" : @"modal://TestModalVC/"},
               @{@"title" : @"modal://TestModalVC/?str1=a&str2=2&i=1"},
-              @{@"title" : @"modal://nvc_TableVC/TestModalVC/?str1=a&str2=2&i=1"}
+              @{@"title" : @"modal://nvc_TableVC/TestModalVC/?str1=a&str2=2&i=1"},
+              @{@"title" : @"TestVC1?str1=你好,&str2=世界!"},
+              @{@"title" : [NSString stringWithFormat:@"TestVC1?str1=%@", JSONString]}
               ];
     
     self.tableView.delegate   = self;

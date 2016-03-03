@@ -193,7 +193,7 @@
     if (isChanged)
         return;
     
-    NSURL *url          = [NSURL URLWithString:URLString];
+    NSURL *url          = [NSURL URLWithString:[URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
     NSArray *components = [url pathComponents];
 #ifdef DEBUG
     NSString *scheme             = url.scheme;
