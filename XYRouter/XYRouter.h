@@ -30,6 +30,7 @@ typedef UIViewController *  (^XYRouterBlock)();
 - (void)mapKey:(NSString *)key toControllerClassName:(NSString *)className;
 - (void)mapKey:(NSString *)key toControllerInstance:(UIViewController *)viewController;
 - (void)mapKey:(NSString *)key toBlock:(XYRouterBlock)block;
+- (void)mapKey:(NSString *)key toNibName:(NSString *)nibName bundle:(NSBundle *)bundle;
 
 // 当取出ViewController的时候, 如果有单例[ViewController sharedInstance], 默认返回单例, 如果没有, 返回[[ViewController alloc] init].
 - (id)viewControllerForKey:(NSString *)key;

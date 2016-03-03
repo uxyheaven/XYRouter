@@ -13,6 +13,15 @@
 @interface NSString (XYRouter_private)
 - (NSMutableDictionary *)__uxy_dictionaryFromQueryComponents;
 @end
+
+@interface XYRouterNib : NSObject
+@property (nonatomic, copy) NSString *nibName;
+@property (nonatomic, strong) NSBundle *bundle;
+@end
+
+@implementation XYRouterNib
+@end
+
 #pragma mark - UIViewController_private
 @interface UIViewController (UIViewController_private)
 @property (nonatomic, copy) NSString *uxy_URLPath;
@@ -112,16 +121,26 @@
     _map[key] = block;
 }
 
+- (void)mapKey:(NSString *)key toNibName:(NSString *)nibName bundle:(NSBundle *)bundle
+{
+    if (key.length == 0)
+    {
+        return;
+    }
+    
+    XYRouterNib *nib = [[XYRouterNib alloc] init];
+    nib.nibName      = nibName;
+    nib.bundle       = bundle;
+    _map[key] = nib;
+}
+
+
 - (id)viewControllerForKey:(NSString *)key
 {
-    NSObject *obj = nil;
-    
-    if (key.length > 0)
-    {
-        obj = [_map objectForKey:key];
-    }
+    NSObject *obj = key.length > 0 ? _map[key] : nil;
 
-    if (obj == nil) return nil;
+    if (obj == nil)
+        return nil;
 
     UIViewController *vc = nil;
     
@@ -144,6 +163,10 @@
     else if ([obj isKindOfClass:[UIViewController class]])
     {
         vc = (UIViewController *)obj;
+    }
+    else if ([obj isKindOfClass:[XYRouterNib class]])
+    {
+        vc = [[UIViewController alloc] initWithNibName:((XYRouterNib *)obj).nibName bundle:((XYRouterNib *)obj).bundle];
     }
     else
     {
