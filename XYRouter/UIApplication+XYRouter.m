@@ -44,64 +44,7 @@
 
 + (void)__uxy_hook_handleOpenURL
 {
-    //  Class clazz = [[[UIApplication sharedApplication] delegate] class];
-
-    static dispatch_once_t once;
-    static NSMutableArray *classNames;
-
-    dispatch_once(&once, ^
-    {
-        unsigned int classesCount = 0;
-
-        classNames = [[NSMutableArray alloc] init];
-        Class *classes = objc_copyClassList(&classesCount);
-
-        for (unsigned int i = 0; i < classesCount; ++i)
-        {
-            Class classType = classes[i];
-            if (class_isMetaClass(classType) )
-            {
-                continue;
-            }
-
-            Class superClass = class_getSuperclass(classType);
-            if (Nil == superClass)
-            {
-                continue;
-            }
-
-            NSString *className = NSStringFromClass(classType);
-            if (0 == className.length)
-            {
-                continue;
-            }
-
-            [classNames addObject:className];
-        }
-
-        free(classes);
-    });
-
-
-    NSMutableArray *results = [[NSMutableArray alloc] init];
-    Protocol *protocol      = NSProtocolFromString(@"UIApplicationDelegate");
-    for (NSString *className in classNames)
-    {
-        Class classType = NSClassFromString(className);
-        if (classType == self)
-        {
-            continue;
-        }
-
-        if (NO == [classType conformsToProtocol:protocol])
-        {
-            continue;
-        }
-
-        [results addObject:className];
-    }
-
-    Class clazz = NSClassFromString(results[0]);
+    Class clazz = NSClassFromString([self __uxy_classNameWithProtocol:@"UIApplicationDelegate"]);
 
     Method a1 = class_getInstanceMethod(clazz, @selector(application:openURL:options:));
     class_addMethod(clazz, @selector(uxyIMPApplicationOpenURLOptions), (IMP)uxyIMPApplicationOpenURLOptions, "B@:@@@");
@@ -128,6 +71,39 @@
     {
         method_exchangeImplementations(a2, b2);
     }
+}
+
++ (NSString *)__uxy_classNameWithProtocol:(NSString *)protocolName
+{
+    unsigned int classesCount = 0;
+
+    Class *classes = objc_copyClassList(&classesCount);
+
+    for (unsigned int i = 0; i < classesCount; ++i)
+    {
+        Class classType = classes[i];
+        if (class_isMetaClass(classType) )
+        {
+            continue;
+        }
+
+        Class superClass = class_getSuperclass(classType);
+        if (Nil == superClass)
+        {
+            continue;
+        }
+
+        Protocol *protocol = NSProtocolFromString(protocolName);
+
+        if ([classType conformsToProtocol:protocol])
+        {
+            return NSStringFromClass(classType);
+        }
+    }
+
+    free(classes);
+
+    return nil;
 }
 
 BOOL uxyIMPApplicationOpenURLOptions(id self, SEL _cmd, UIApplication *application, NSURL *url, NSDictionary *options)
