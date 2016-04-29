@@ -104,3 +104,12 @@ path还支持相对路径, 如下面的代码可以在当前目录下push出一�
 ```
 [[XYRouter sharedInstance] openURLString:@"dismiss"];
 ```
+
+#### openURL:
+如果在info.plist里添加一个 URL Scheme: `XYRouter`的话,
+在用系统的`UIApplication openURL`方法时, 加上加上`XYRouter://`前缀的话, 就可以自动路由到`XYRouter openURLString`
+
+```
+[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"XYRouter://TableVC"]];
+```
+
