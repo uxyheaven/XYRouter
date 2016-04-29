@@ -107,9 +107,10 @@ path还支持相对路径, 如下面的代码可以在当前目录下push出一�
 
 #### openURL:
 如果在info.plist里添加一个 URL Scheme: `XYRouter`的话,
-在用系统的`UIApplication openURL`方法时, 加上加上`XYRouter://`前缀的话, 就可以自动路由到`XYRouter openURLString`
+在用系统的`UIApplication openURL`方法时, 加上加上`XYRouter://`前缀的话, 就可以自动路由到`XYRouter openURLString`, 解析的时候会按照去掉`XYRouter://`后的字串解析
 
 ```
+// 按照TableVC解析
 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"XYRouter://TableVC"]];
 ```
 
