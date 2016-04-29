@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5791EC161CD2F27D00946A4E /* UIApplication+XYRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5791EC151CD2F27D00946A4E /* UIApplication+XYRouter.m */; };
 		57E8B8391B81BDF3000A2F99 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B8381B81BDF3000A2F99 /* main.m */; };
 		57E8B83C1B81BDF3000A2F99 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B83B1B81BDF3000A2F99 /* AppDelegate.m */; };
 		57E8B83F1B81BDF3000A2F99 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B83E1B81BDF3000A2F99 /* ViewController.m */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5791EC141CD2F27D00946A4E /* UIApplication+XYRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+XYRouter.h"; sourceTree = "<group>"; };
+		5791EC151CD2F27D00946A4E /* UIApplication+XYRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+XYRouter.m"; sourceTree = "<group>"; };
 		57E8B8331B81BDF3000A2F99 /* XYRouterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XYRouterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57E8B8371B81BDF3000A2F99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57E8B8381B81BDF3000A2F99 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -174,6 +177,8 @@
 			children = (
 				57F0FC4F1B83067D00917062 /* XYRouter.h */,
 				57F0FC501B83067D00917062 /* XYRouter.m */,
+				5791EC141CD2F27D00946A4E /* UIApplication+XYRouter.h */,
+				5791EC151CD2F27D00946A4E /* UIApplication+XYRouter.m */,
 			);
 			path = XYRouter;
 			sourceTree = SOURCE_ROOT;
@@ -282,6 +287,7 @@
 				57E8B83F1B81BDF3000A2F99 /* ViewController.m in Sources */,
 				57E8B83C1B81BDF3000A2F99 /* AppDelegate.m in Sources */,
 				57E8B8391B81BDF3000A2F99 /* main.m in Sources */,
+				5791EC161CD2F27D00946A4E /* UIApplication+XYRouter.m in Sources */,
 				57E8B8651B81BEC5000A2F99 /* UIViewController+nvcItem.m in Sources */,
 				57E8B8661B81BEC5000A2F99 /* XYTransitioning.m in Sources */,
 				57E8B86E1B81BECE000A2F99 /* TableViewController.m in Sources */,

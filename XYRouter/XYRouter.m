@@ -193,8 +193,6 @@
 
 - (void)openURLString:(NSString *)URLString
 {
-    //  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:URLString]];
-
     // 处理模态dismiss
     BOOL isChanged = [self __handleDismissWithURLString:URLString];
     if (isChanged)
@@ -204,11 +202,13 @@
 
     NSURL *url          = [NSURL URLWithString:[URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
     NSArray *components = [url pathComponents];
-       #ifdef DEBUG
+
+#ifdef DEBUG
     NSString *scheme          = url.scheme;
     NSString *host            = url.host;
     NSString *parameterString = url.parameterString;
-       #endif
+#endif
+
     _isPathCacheChanged = YES;
 
     isChanged = [self __handleModalWithURL:url];

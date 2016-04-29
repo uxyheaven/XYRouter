@@ -73,4 +73,10 @@
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    NSLog(@"%@", url);
+    return YES;
+}
+
 @end
