@@ -140,10 +140,10 @@ BOOL uxyIMPApplicationHandleOpenURL(id self, SEL _cmd, UIApplication *applicatio
         [[XYRouter sharedInstance] openURLString:str];
     }
 
-    NSMethodSignature *sig   = [[[[UIApplication sharedApplication] delegate] class] instanceMethodSignatureForSelector:@selector(uxyIMPApplicationHandleOpenURL:)];
+    NSMethodSignature *sig   = [[[[UIApplication sharedApplication] delegate] class] instanceMethodSignatureForSelector:@selector(uxyIMPApplicationHandleOpenURL)];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
     invocation.target   = self;
-    invocation.selector = @selector(uxyIMPApplicationHandleOpenURL:);
+    invocation.selector = @selector(uxyIMPApplicationHandleOpenURL);
     [invocation setArgument:&application atIndex:2];
     [invocation setArgument:&url atIndex:3];
     [invocation invoke];

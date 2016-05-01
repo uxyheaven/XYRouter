@@ -225,8 +225,15 @@
         // todo 处理window.rootViewController改变的情况
     }
 
-    UINavigationController *nvc = [[self class] __expectedVisibleNavigationController];
-    // if (nvc == nil || (components.count == 0)) return;
+    UINavigationController *nvc;
+    if ([_delegate respondsToSelector:@selector(xyRouter:navigationControllerFromController:toController:URL:)])
+    {
+        nvc = [_delegate xyRouter:self navigationControllerFromController:nil toController:nil URL:URLString];
+    }
+    else
+    {
+        nvc = [[self class] __expectedVisibleNavigationController];
+    }
 
     // 先看需求pop一些vc
     [self __handlePopViewControllerByComponents:components atNavigationController:nvc];
@@ -253,11 +260,6 @@
     [self __pushViewController:vc parameters:parameters atNavigationController:nvc animated:YES];
 }
 
-+ (UINavigationController *)expectedVisibleNavigationController
-{
-    return (UINavigationController *)@"miss";
-}
-
 #pragma mark - private
 - (XYRouteType)routeTypeByComponent:(NSString *)component
 {
@@ -279,17 +281,10 @@
 
 + (UINavigationController *)__expectedVisibleNavigationController
 {
-    UINavigationController *nvc = [[self class] expectedVisibleNavigationController];
-    if ([nvc isKindOfClass:[UINavigationController class]])
-    {
-        return nvc;
-    }
-    else
-    {
-        UIViewController *vc        = [self __visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController];
-        UINavigationController *nvc = (UINavigationController *)([vc isKindOfClass:[UINavigationController class]] ? vc : vc.navigationController);
-        return nvc;
-    }
+    UIViewController *vc        = [self __visibleViewControllerWithRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController];
+    UINavigationController *nvc = (UINavigationController *)([vc isKindOfClass:[UINavigationController class]] ? vc : vc.navigationController);
+
+    return nvc;
 }
 
 + (UIViewController *)__visibleViewController
