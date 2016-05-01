@@ -15,4 +15,6 @@
 @property (nonatomic, copy) NSString *str1;
 @property (nonatomic, copy) NSString *str2;
 
++ (instancetype)viewControllerWithStr1:(NSString *)str1 str2:(NSString *)str2;
+
 @end

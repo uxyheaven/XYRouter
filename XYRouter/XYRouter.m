@@ -191,6 +191,39 @@
     return vc;
 }
 
+- (UIViewController *)__viewControllerForKey:(NSString *)key anchor:(NSString *)anchor parameters:(NSDictionary *)parameters
+{
+    NSObject *obj = key.length > 0 ? _map[key] : nil;
+
+    if (obj == nil)
+    {
+        return nil;
+    }
+
+    SEL sel = NSSelectorFromString(anchor);
+
+    if (sel == NULL)
+    {
+        return nil;
+    }
+
+
+    NSMethodSignature *sig = [NSClassFromString(key) methodSignatureForSelector:sel];
+    if (sig == nil)
+    {
+        return nil;
+    }
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+    invocation.target   = NSClassFromString(key);
+    invocation.selector = sel;
+
+    [invocation invoke];
+    id returnValue;
+    [invocation getReturnValue:&returnValue];
+
+    return returnValue;
+}
+
 - (void)openURLString:(NSString *)URLString
 {
     // 处理模态dismiss
@@ -226,13 +259,14 @@
     }
 
     UINavigationController *nvc;
-    if ([_delegate respondsToSelector:@selector(xyRouter:navigationControllerFromController:toController:URL:)])
+    if (![_delegate respondsToSelector:@selector(xyRouter:navigationControllerFromController:toController:URL:)])
     {
-        nvc = [_delegate xyRouter:self navigationControllerFromController:nil toController:nil URL:URLString];
+        nvc = [[self class] __expectedVisibleNavigationController];
     }
     else
     {
-        nvc = [[self class] __expectedVisibleNavigationController];
+        // 处理 自定义navigationController的
+        nvc = [_delegate xyRouter:self navigationControllerFromController:nil toController:nil URL:URLString];
     }
 
     // 先看需求pop一些vc
@@ -257,7 +291,22 @@
     // 最后在push最后的vc
     UIViewController *vc     = [self viewControllerForKey:[components lastObject]];
     NSDictionary *parameters = [self __dictionaryFromQuery:url.query];
-    [self __pushViewController:vc parameters:parameters atNavigationController:nvc animated:YES];
+
+    if (vc != nil)
+    {
+        [self __pushViewController:vc parameters:parameters atNavigationController:nvc animated:YES];
+        return;
+    }
+
+
+    // 处理有锚点的
+    NSArray *array = [[components lastObject] componentsSeparatedByString:@"#"];
+    if (array.count == 2)
+    {
+        vc = [self __viewControllerForKey:array[0] anchor:array[1] parameters:parameters];
+        [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:YES];
+        return;
+    }
 }
 
 #pragma mark - private
