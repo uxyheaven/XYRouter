@@ -191,7 +191,7 @@
     return vc;
 }
 
-- (UIViewController *)__viewControllerForKey:(NSString *)key anchor:(NSString *)anchor parameters:(NSDictionary *)parameters
+- (UIViewController *)__viewControllerForKey:(NSString *)key anchor:(NSString *)anchor argument:(NSArray *)argument
 {
     NSObject *obj = key.length > 0 ? _map[key] : nil;
 
@@ -213,9 +213,52 @@
     {
         return nil;
     }
+
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
     invocation.target   = NSClassFromString(key);
     invocation.selector = sel;
+
+       for (int i = 0; i < argument.count; i++)
+       {
+        const char *returnType = [sig getArgumentTypeAtIndex:i + 2];
+        id arg                 = argument[i];
+        // js数据类型转换成oc数据类型
+        switch (returnType[0] == 'r' ? returnType[1] : returnType[0])
+        {
+       #define XC_CALL_ARG_CASE(_typeString, _type, _selector) \
+       case _typeString: {                              \
+        _type value = [arg _selector];                     \
+        [invocation setArgument:&value atIndex:i + 2]; \
+        break; \
+       }
+
+            XC_CALL_ARG_CASE('c', char, charValue)
+            XC_CALL_ARG_CASE('C', unsigned char, unsignedCharValue)
+            XC_CALL_ARG_CASE('s', short, shortValue)
+            XC_CALL_ARG_CASE('S', unsigned short, unsignedShortValue)
+            XC_CALL_ARG_CASE('i', int, intValue)
+            XC_CALL_ARG_CASE('I', unsigned int, unsignedIntValue)
+            XC_CALL_ARG_CASE('l', long, longValue)
+            XC_CALL_ARG_CASE('L', unsigned long, unsignedLongValue)
+            XC_CALL_ARG_CASE('q', long long, longLongValue)
+            XC_CALL_ARG_CASE('Q', unsigned long long, unsignedLongLongValue)
+            XC_CALL_ARG_CASE('f', float, floatValue)
+            XC_CALL_ARG_CASE('d', double, doubleValue)
+            XC_CALL_ARG_CASE('B', BOOL, boolValue)
+
+            default:
+                if ([arg isKindOfClass:[NSNull class]])
+                {
+                    arg = [NSNull null];
+                    [invocation setArgument:&arg atIndex:i + 2];
+                }
+                else
+                {
+                    [invocation setArgument:&arg atIndex:i + 2];
+                }
+                break;
+        }
+       }
 
     [invocation invoke];
     id returnValue;
@@ -303,7 +346,15 @@
     NSArray *array = [[components lastObject] componentsSeparatedByString:@"#"];
     if (array.count == 2)
     {
-        vc = [self __viewControllerForKey:array[0] anchor:array[1] parameters:parameters];
+        NSArray *list = [array[1] componentsSeparatedByString:@","];
+        if (list.count < 1)
+        {
+            return;
+        }
+
+        NSArray *argument = list.count > 1 ? [list subarrayWithRange:NSMakeRange(1, list.count - 1)] : nil;
+
+        vc = [self __viewControllerForKey:array[0] anchor:list[0] argument:argument];
         [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:YES];
         return;
     }

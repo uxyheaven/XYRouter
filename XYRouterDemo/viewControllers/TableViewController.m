@@ -62,7 +62,7 @@
         @{@"title": @"TestVC1?str1=你好,&str2=世界!"},
         @{@"title": [NSString stringWithFormat:@"TestVC1?str1=%@", JSONString]},
         @{@"title": @"XYRouter://TableVC"},
-        @{@"title": @"TestVC1#viewControllerWithStr1:str2:?str1=你好,&str2=世界!"}
+        @{@"title": @"TestVC1#viewControllerWithStr1:str2:,你好,世界!"}
     ];
 
     self.tableView.delegate   = self;
