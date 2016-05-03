@@ -218,33 +218,33 @@
     invocation.target   = NSClassFromString(key);
     invocation.selector = sel;
 
-       for (int i = 0; i < argument.count; i++)
-       {
+    for (int i = 0; i < argument.count; i++)
+    {
         const char *returnType = [sig getArgumentTypeAtIndex:i + 2];
         id arg                 = argument[i];
         // js数据类型转换成oc数据类型
         switch (returnType[0] == 'r' ? returnType[1] : returnType[0])
         {
-       #define XC_CALL_ARG_CASE(_typeString, _type, _selector) \
-       case _typeString: {                              \
+#define __UXY_CALL_ARG_CASE(_typeString, _type, _selector) \
+    case _typeString: {                              \
         _type value = [arg _selector];                     \
         [invocation setArgument:&value atIndex:i + 2]; \
         break; \
-       }
+    }
 
-            XC_CALL_ARG_CASE('c', char, charValue)
-            XC_CALL_ARG_CASE('C', unsigned char, unsignedCharValue)
-            XC_CALL_ARG_CASE('s', short, shortValue)
-            XC_CALL_ARG_CASE('S', unsigned short, unsignedShortValue)
-            XC_CALL_ARG_CASE('i', int, intValue)
-            XC_CALL_ARG_CASE('I', unsigned int, unsignedIntValue)
-            XC_CALL_ARG_CASE('l', long, longValue)
-            XC_CALL_ARG_CASE('L', unsigned long, unsignedLongValue)
-            XC_CALL_ARG_CASE('q', long long, longLongValue)
-            XC_CALL_ARG_CASE('Q', unsigned long long, unsignedLongLongValue)
-            XC_CALL_ARG_CASE('f', float, floatValue)
-            XC_CALL_ARG_CASE('d', double, doubleValue)
-            XC_CALL_ARG_CASE('B', BOOL, boolValue)
+            __UXY_CALL_ARG_CASE('c', char, charValue)
+            __UXY_CALL_ARG_CASE('C', unsigned char, unsignedCharValue)
+            __UXY_CALL_ARG_CASE('s', short, shortValue)
+            __UXY_CALL_ARG_CASE('S', unsigned short, unsignedShortValue)
+            __UXY_CALL_ARG_CASE('i', int, intValue)
+            __UXY_CALL_ARG_CASE('I', unsigned int, unsignedIntValue)
+            __UXY_CALL_ARG_CASE('l', long, longValue)
+            __UXY_CALL_ARG_CASE('L', unsigned long, unsignedLongValue)
+            __UXY_CALL_ARG_CASE('q', long long, longLongValue)
+            __UXY_CALL_ARG_CASE('Q', unsigned long long, unsignedLongLongValue)
+            __UXY_CALL_ARG_CASE('f', float, floatValue)
+            __UXY_CALL_ARG_CASE('d', double, doubleValue)
+            __UXY_CALL_ARG_CASE('B', BOOL, boolValue)
 
             default:
                 if ([arg isKindOfClass:[NSNull class]])
@@ -258,7 +258,7 @@
                 }
                 break;
         }
-       }
+    }
 
     [invocation invoke];
     id returnValue;
