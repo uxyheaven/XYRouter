@@ -220,10 +220,10 @@
 
     for (int i = 0; i < argument.count; i++)
     {
-        const char *returnType = [sig getArgumentTypeAtIndex:i + 2];
-        id arg                 = argument[i];
+        const char *argumentType = [sig getArgumentTypeAtIndex:i + 2];
+        id arg                   = argument[i];
         // js数据类型转换成oc数据类型
-        switch (returnType[0] == 'r' ? returnType[1] : returnType[0])
+        switch (argumentType[0] == 'r' ? argumentType[1] : argumentType[0])
         {
 #define __UXY_CALL_ARG_CASE(_typeString, _type, _selector) \
     case _typeString: {                              \
