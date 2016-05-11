@@ -18,28 +18,30 @@
 
 + (void)load
 {
-    NSArray *array = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleURLTypes"];
-    if (array.count == 0)
-    {
-        return;
+    @autoreleasepool {
+        NSArray *array = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleURLTypes"];
+        if (array.count == 0)
+        {
+            return;
+        }
+
+        [array enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
+            NSArray *schemes = obj[@"CFBundleURLSchemes"];
+
+            if (![schemes isKindOfClass:[NSArray class]] || schemes.count == 0)
+            {
+                return;
+            }
+
+            NSString *URLSchemes = schemes[0];
+            if (![URLSchemes isEqualToString:@"XYRouter"])
+            {
+                return;
+            }
+
+            [self __uxy_hook_handleOpenURL];
+        }];
     }
-
-    [array enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
-        NSArray *schemes = obj[@"CFBundleURLSchemes"];
-
-        if (![schemes isKindOfClass:[NSArray class]] || schemes.count == 0)
-        {
-            return;
-        }
-
-        NSString *URLSchemes = schemes[0];
-        if (![URLSchemes isEqualToString:@"XYRouter"])
-        {
-            return;
-        }
-
-        [self __uxy_hook_handleOpenURL];
-    }];
 }
 
 + (void)__uxy_hook_handleOpenURL
@@ -120,9 +122,12 @@ BOOL uxyIMPApplicationOpenURLOptions(id self, SEL _cmd, UIApplication *applicati
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
     invocation.target   = self;
     invocation.selector = @selector(uxyIMPApplicationOpenURLOptions);
-    [invocation setArgument:&application atIndex:2];
-    [invocation setArgument:&url atIndex:3];
-    [invocation setArgument:&options atIndex:4];
+    [invocation setArgument:&application
+                    atIndex:2];
+    [invocation setArgument:&url
+                    atIndex:3];
+    [invocation setArgument:&options
+                    atIndex:4];
     [invocation invoke];
     BOOL returnValue;
     [invocation getReturnValue:&returnValue];
@@ -144,8 +149,10 @@ BOOL uxyIMPApplicationHandleOpenURL(id self, SEL _cmd, UIApplication *applicatio
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
     invocation.target   = self;
     invocation.selector = @selector(uxyIMPApplicationHandleOpenURL);
-    [invocation setArgument:&application atIndex:2];
-    [invocation setArgument:&url atIndex:3];
+    [invocation setArgument:&application
+                    atIndex:2];
+    [invocation setArgument:&url
+                    atIndex:3];
     [invocation invoke];
     BOOL returnValue;
     [invocation getReturnValue:&returnValue];
