@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|  
-  version            = "0.7.0"
+  version            = "0.7.1"
   s.name             = "XYRouter"  
   s.version          = version  
   s.summary          = "XYRouter是一个通过URL routing来解决UIViewController跳转依赖的类. "  

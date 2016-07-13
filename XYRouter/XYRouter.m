@@ -171,7 +171,8 @@
     }
     else if ([obj isKindOfClass:[XYRouterNib class]])
     {
-        vc = [[UIViewController alloc] initWithNibName:((XYRouterNib *)obj).nibName bundle:((XYRouterNib *)obj).bundle];
+        vc = [[UIViewController alloc] initWithNibName:((XYRouterNib *)obj).nibName
+                                                bundle:((XYRouterNib *)obj).bundle];
     }
     else
     {
@@ -228,7 +229,8 @@
 #define __UXY_CALL_ARG_CASE(_typeString, _type, _selector) \
     case _typeString: {                              \
         _type value = [arg _selector];                     \
-        [invocation setArgument:&value atIndex:i + 2]; \
+        [invocation setArgument:&value \
+                        atIndex:i + 2]; \
         break; \
     }
 
@@ -250,21 +252,23 @@
                 if ([arg isKindOfClass:[NSNull class]])
                 {
                     arg = [NSNull null];
-                    [invocation setArgument:&arg atIndex:i + 2];
+                    [invocation setArgument:&arg
+                                    atIndex:i + 2];
                 }
                 else
                 {
-                    [invocation setArgument:&arg atIndex:i + 2];
+                    [invocation setArgument:&arg
+                                    atIndex:i + 2];
                 }
                 break;
         }
     }
 
     [invocation invoke];
-    id returnValue;
+    void *returnValue;
     [invocation getReturnValue:&returnValue];
 
-    return returnValue;
+    return (__bridge id)returnValue;
 }
 
 - (void)openURLString:(NSString *)URLString
@@ -309,25 +313,35 @@
     else
     {
         // 处理 自定义navigationController的
-        nvc = [_delegate xyRouter:self navigationControllerFromController:nil toController:nil URL:URLString];
+        nvc = [_delegate xyRouter:self
+               navigationControllerFromController:nil
+                                     toController:nil
+                                              URL:URLString];
     }
 
     // 先看需求pop一些vc
-    [self __handlePopViewControllerByComponents:components atNavigationController:nvc];
+    [self __handlePopViewControllerByComponents:components
+                         atNavigationController:nvc];
 
     // 多个路径先无动画push中间的vc
     if (components.count > 1)
     {
-        NSInteger start = [self lastSameComponentWithComponents:components viewControllers:nvc.viewControllers] + 1;
+        NSInteger start = [self lastSameComponentWithComponents:components
+                                                viewControllers:nvc.viewControllers] + 1;
         for (NSInteger i = start; i < components.count - 1; i++)
         {
-            if ([components[i] isEqualToString:@"."] || [components[i] isEqualToString:@".."])
+            if ([components[i]
+                 isEqualToString:@"."] || [components[i]
+                                           isEqualToString:@".."])
             {
                 continue;
             }
 
             UIViewController *vc = [self viewControllerForKey:components[i]];
-            [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:NO];
+            [self __pushViewController:vc
+                            parameters:nil
+                atNavigationController:nvc
+                              animated:NO];
         }
     }
 
@@ -337,7 +351,10 @@
 
     if (vc != nil)
     {
-        [self __pushViewController:vc parameters:parameters atNavigationController:nvc animated:YES];
+        [self __pushViewController:vc
+                        parameters:parameters
+            atNavigationController:nvc
+                          animated:YES];
         return;
     }
 
@@ -346,7 +363,8 @@
     NSArray *array = [[components lastObject] componentsSeparatedByString:@"#"];
     if (array.count == 2)
     {
-        NSArray *list = [array[1] componentsSeparatedByString:@","];
+        NSArray *list = [array[1]
+                         componentsSeparatedByString:@","];
         if (list.count < 1)
         {
             return;
@@ -354,8 +372,13 @@
 
         NSArray *argument = list.count > 1 ? [list subarrayWithRange:NSMakeRange(1, list.count - 1)] : nil;
 
-        vc = [self __viewControllerForKey:array[0] anchor:list[0] argument:argument];
-        [self __pushViewController:vc parameters:nil atNavigationController:nvc animated:YES];
+        vc = [self __viewControllerForKey:array[0]
+                                   anchor:list[0]
+                                 argument:argument];
+        [self __pushViewController:vc
+                        parameters:nil
+            atNavigationController:nvc
+                          animated:YES];
         return;
     }
 }
@@ -453,7 +476,9 @@
         return NO;
     }
 
-    [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.rootViewController
+     dismissViewControllerAnimated:YES
+                        completion:nil];
 
     return YES;
 }
@@ -484,7 +509,10 @@
         animated = YES;
     }
 
-    [self.rootViewController presentViewController:vc animated:animated completion:nil];
+    [self.rootViewController
+     presentViewController:vc
+                  animated:animated
+                completion:nil];
 
     return YES;
 }
@@ -495,7 +523,9 @@
     XYRouteType type = [self routeTypeByComponent:[components firstObject]];
     BOOL animated    = NO;
     if (components.count == 1 &&
-        ([components[0] isEqualToString:@".."] || [components[0] isEqualToString:@"/"]))
+        ([components[0]
+          isEqualToString:@".."] || [components[0]
+                                     isEqualToString:@"/"]))
     {
         animated = YES;
     }
@@ -509,9 +539,11 @@
     }
     else if (type == XYRouteURLType_pushAfterGotoRoot)
     {
-        NSInteger last       = [self lastSameComponentWithComponents:components viewControllers:navigationController.viewControllers];
+        NSInteger last = [self lastSameComponentWithComponents:components
+                                               viewControllers:navigationController.viewControllers];
         UIViewController *vc = navigationController.viewControllers[last];
-        [navigationController popToViewController:vc animated:animated];
+        [navigationController popToViewController:vc
+                                         animated:animated];
     }
 }
 
@@ -522,7 +554,8 @@
     NSInteger result = 0;
     for (NSInteger i = 1; i < max; i++)
     {
-        if (![components[i] isEqualToString:[vcs[i] uxy_URLPath]])
+        if (![components[i]
+              isEqualToString:[vcs[i] uxy_URLPath]])
         {
             result = i - 1;
             break;
@@ -546,7 +579,8 @@
                           forKey:key];
     }];
 
-    [navigationController pushViewController:viewController animated:animated];
+    [navigationController pushViewController:viewController
+                                    animated:animated];
 }
 
 - (NSString *)__URLDecodingWithEncodingString:(NSString *)encodingString

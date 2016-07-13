@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 #undef  __XYROUTER_VERSION__
-#define __XYROUTER_VERSION__    "0.7.0" // 主版本号
+#define __XYROUTER_VERSION__    "0.7.1" // 主版本号
 
 
 #pragma mark - define
