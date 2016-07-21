@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 #undef  __XYROUTER_VERSION__
-#define __XYROUTER_VERSION__    "0.7.1" // 主版本号
+#define __XYROUTER_VERSION__    "0.7.2" // 主版本号
 
 
 #pragma mark - define
@@ -53,6 +53,7 @@ typedef UIViewController *  (^XYRouterBlock)();
 
 // 当取出ViewController的时候, 如果有单例[ViewController sharedInstance], 默认返回单例, 如果没有, 返回[[ViewController alloc] init].
 - (id)viewControllerForKey:(NSString *)key;
+- (id)viewControllerForClassName:(NSString *)name;
 
 - (void)openURLString:(NSString *)URLString;
 

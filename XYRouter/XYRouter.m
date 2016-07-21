@@ -192,6 +192,28 @@
     return vc;
 }
 
+- (id)viewControllerForClassName:(NSString *)name
+{
+    Class classType = NSClassFromString(name);
+
+    if (![classType isKindOfClass:[UIViewController class]])
+    {
+        return nil;
+    }
+
+    UIViewController *vc = [[classType alloc] init];
+    if ([vc isKindOfClass:[UINavigationController class]])
+    {
+        ((UINavigationController *)vc).visibleViewController.uxy_URLPath = name;
+    }
+    else
+    {
+        vc.uxy_URLPath = name;
+    }
+
+    return vc;
+}
+
 - (UIViewController *)__viewControllerForKey:(NSString *)key anchor:(NSString *)anchor argument:(NSArray *)argument
 {
     NSObject *obj = key.length > 0 ? _map[key] : nil;
