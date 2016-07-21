@@ -20,12 +20,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XYRouter/XYRouter.m"
-            timestampString = "490067545.311827"
+            timestampString = "490775406.041208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "582"
-            endingLineNumber = "582"
+            startingLineNumber = "604"
+            endingLineNumber = "604"
             landmarkName = "-__pushViewController:parameters:atNavigationController:animated:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XYRouterDemo/viewControllers/TestVC1.m"
+            timestampString = "490540712.455259"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "+viewControllerWithStr1:str2:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
