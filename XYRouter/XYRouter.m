@@ -214,85 +214,6 @@
     return vc;
 }
 
-- (UIViewController *)__viewControllerForKey:(NSString *)key anchor:(NSString *)anchor argument:(NSArray *)argument
-{
-    NSObject *obj = key.length > 0 ? _map[key] : nil;
-
-    if (obj == nil)
-    {
-        return nil;
-    }
-
-    SEL sel = NSSelectorFromString(anchor);
-
-    if (sel == NULL)
-    {
-        return nil;
-    }
-
-
-    NSMethodSignature *sig = [NSClassFromString(key) methodSignatureForSelector:sel];
-    if (sig == nil)
-    {
-        return nil;
-    }
-
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-    invocation.target   = NSClassFromString(key);
-    invocation.selector = sel;
-
-    for (int i = 0; i < argument.count; i++)
-    {
-        const char *argumentType = [sig getArgumentTypeAtIndex:i + 2];
-        id arg                   = argument[i];
-        // js数据类型转换成oc数据类型
-        switch (argumentType[0] == 'r' ? argumentType[1] : argumentType[0])
-        {
-#define __UXY_CALL_ARG_CASE(_typeString, _type, _selector) \
-    case _typeString: {                              \
-        _type value = [arg _selector];                     \
-        [invocation setArgument:&value \
-                        atIndex:i + 2]; \
-        break; \
-    }
-
-            __UXY_CALL_ARG_CASE('c', char, charValue)
-            __UXY_CALL_ARG_CASE('C', unsigned char, unsignedCharValue)
-            __UXY_CALL_ARG_CASE('s', short, shortValue)
-            __UXY_CALL_ARG_CASE('S', unsigned short, unsignedShortValue)
-            __UXY_CALL_ARG_CASE('i', int, intValue)
-            __UXY_CALL_ARG_CASE('I', unsigned int, unsignedIntValue)
-            __UXY_CALL_ARG_CASE('l', long, longValue)
-            __UXY_CALL_ARG_CASE('L', unsigned long, unsignedLongValue)
-            __UXY_CALL_ARG_CASE('q', long long, longLongValue)
-            __UXY_CALL_ARG_CASE('Q', unsigned long long, unsignedLongLongValue)
-            __UXY_CALL_ARG_CASE('f', float, floatValue)
-            __UXY_CALL_ARG_CASE('d', double, doubleValue)
-            __UXY_CALL_ARG_CASE('B', BOOL, boolValue)
-
-            default:
-                if ([arg isKindOfClass:[NSNull class]])
-                {
-                    arg = [NSNull null];
-                    [invocation setArgument:&arg
-                                    atIndex:i + 2];
-                }
-                else
-                {
-                    [invocation setArgument:&arg
-                                    atIndex:i + 2];
-                }
-                break;
-        }
-    }
-
-    [invocation invoke];
-    void *returnValue;
-    [invocation getReturnValue:&returnValue];
-
-    return (__bridge id)returnValue;
-}
-
 - (void)openURLString:(NSString *)URLString
 {
     // 处理模态dismiss
@@ -341,68 +262,45 @@
                                               URL:URLString];
     }
 
-    // 先看需求pop一些vc
+    // 处理需要pop的vc
     [self __handlePopViewControllerByComponents:components
                          atNavigationController:nvc];
 
-    // 多个路径先无动画push中间的vc
-    if (components.count > 1)
-    {
-        NSInteger start = [self lastSameComponentWithComponents:components
-                                                viewControllers:nvc.viewControllers] + 1;
-        for (NSInteger i = start; i < components.count - 1; i++)
-        {
-            if ([components[i]
-                 isEqualToString:@"."] || [components[i]
-                                           isEqualToString:@".."])
-            {
-                continue;
-            }
+    // 处理需要push的vc
+    [self __handlePushViewControllerByComponents:components
+                          atNavigationController:nvc];
 
-            UIViewController *vc = [self viewControllerForKey:components[i]];
-            [self __pushViewController:vc
-                            parameters:nil
-                atNavigationController:nvc
-                              animated:NO];
-        }
-    }
-
-    // 最后在push最后的vc
-    UIViewController *vc     = [self viewControllerForKey:[components lastObject]];
-    NSDictionary *parameters = [self __dictionaryFromQuery:url.query];
-
-    if (vc != nil)
-    {
-        [self __pushViewController:vc
-                        parameters:parameters
-            atNavigationController:nvc
-                          animated:YES];
-        return;
-    }
-
-
-    // 处理有锚点的
+    UIViewController *finalVC;
+    
+    // 获取有锚点的vc
     NSArray *array = [[components lastObject] componentsSeparatedByString:@"#"];
     if (array.count == 2)
     {
-        NSArray *list = [array[1]
-                         componentsSeparatedByString:@","];
-        if (list.count < 1)
-        {
-            return;
-        }
-
+        NSArray *list = [array[1] componentsSeparatedByString:@","];
+        NSAssert(list.count > 0, @"锚点参数不正确");
+        
         NSArray *argument = list.count > 1 ? [list subarrayWithRange:NSMakeRange(1, list.count - 1)] : nil;
-
-        vc = [self __viewControllerForKey:array[0]
-                                   anchor:list[0]
-                                 argument:argument];
-        [self __pushViewController:vc
-                        parameters:nil
-            atNavigationController:nvc
-                          animated:YES];
+        
+        finalVC = [self __viewControllerForKey:array[0]
+                                        anchor:list[0]
+                                      argument:argument];
+    }
+    
+    // 获取不到有锚点的vc, 就获取普通的vc
+    finalVC =  finalVC ?: [self viewControllerForKey:[components lastObject]];
+    
+    if (finalVC == nil)
+    {
         return;
     }
+    
+    NSDictionary *parameters = [self __dictionaryFromQuery:url.query];
+    
+    // 最后在push最后的vc
+    [self __pushViewController:finalVC
+                    parameters:parameters
+        atNavigationController:nvc
+                      animated:YES];
 }
 
 #pragma mark - private
@@ -539,15 +437,14 @@
     return YES;
 }
 
-// 先看需求pop一些vc
-- (void)__handlePopViewControllerByComponents:(NSArray *)components atNavigationController:(UINavigationController *)navigationController
+// 处理需要pop的vc
+- (void)__handlePopViewControllerByComponents:(NSArray *)components
+                       atNavigationController:(UINavigationController *)navigationController
 {
     XYRouteType type = [self routeTypeByComponent:[components firstObject]];
     BOOL animated    = NO;
     if (components.count == 1 &&
-        ([components[0]
-          isEqualToString:@".."] || [components[0]
-                                     isEqualToString:@"/"]))
+        ([components[0] isEqualToString:@".."] || [components[0] isEqualToString:@"/"]))
     {
         animated = YES;
     }
@@ -561,15 +458,43 @@
     }
     else if (type == XYRouteURLType_pushAfterGotoRoot)
     {
-        NSInteger last = [self lastSameComponentWithComponents:components
-                                               viewControllers:navigationController.viewControllers];
+        NSInteger last = [self __lastSameComponentWithComponents:components
+                                                 viewControllers:navigationController.viewControllers];
         UIViewController *vc = navigationController.viewControllers[last];
         [navigationController popToViewController:vc
                                          animated:animated];
     }
 }
 
-- (NSInteger)lastSameComponentWithComponents:(NSArray *)components viewControllers:(NSArray *)vcs
+// 处理需要pop的vc
+- (void)__handlePushViewControllerByComponents:(NSArray *)components
+                        atNavigationController:(UINavigationController *)navigationController
+{
+    if (components.count < 2)
+    {
+        return;
+    }
+    
+    NSInteger start = [self __lastSameComponentWithComponents:components
+                                              viewControllers:navigationController.viewControllers] + 1;
+    for (NSInteger i = start; i < components.count - 1; i++)
+    {
+        if ([components[i] isEqualToString:@"."] ||
+            [components[i] isEqualToString:@".."])
+        {
+            continue;
+        }
+        
+        UIViewController *vc = [self viewControllerForKey:components[i]];
+        [self __pushViewController:vc
+                        parameters:nil
+            atNavigationController:navigationController
+                          animated:NO];
+    }
+}
+
+- (NSInteger)__lastSameComponentWithComponents:(NSArray *)components
+                               viewControllers:(NSArray *)vcs
 {
     NSInteger max = MIN(components.count, vcs.count);
 
@@ -633,6 +558,85 @@
     }
 
     return result;
+}
+
+- (UIViewController *)__viewControllerForKey:(NSString *)key anchor:(NSString *)anchor argument:(NSArray *)argument
+{
+    NSObject *obj = key.length > 0 ? _map[key] : nil;
+    
+    if (obj == nil)
+    {
+        return nil;
+    }
+    
+    SEL sel = NSSelectorFromString(anchor);
+    
+    if (sel == NULL)
+    {
+        return nil;
+    }
+    
+    
+    NSMethodSignature *sig = [NSClassFromString(key) methodSignatureForSelector:sel];
+    if (sig == nil)
+    {
+        return nil;
+    }
+    
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+    invocation.target   = NSClassFromString(key);
+    invocation.selector = sel;
+    
+    for (int i = 0; i < argument.count; i++)
+    {
+        const char *argumentType = [sig getArgumentTypeAtIndex:i + 2];
+        id arg                   = argument[i];
+        // js数据类型转换成oc数据类型
+        switch (argumentType[0] == 'r' ? argumentType[1] : argumentType[0])
+        {
+#define __UXY_CALL_ARG_CASE(_typeString, _type, _selector) \
+case _typeString: {                              \
+_type value = [arg _selector];                     \
+[invocation setArgument:&value \
+atIndex:i + 2]; \
+break; \
+}
+                
+                __UXY_CALL_ARG_CASE('c', char, charValue)
+                __UXY_CALL_ARG_CASE('C', unsigned char, unsignedCharValue)
+                __UXY_CALL_ARG_CASE('s', short, shortValue)
+                __UXY_CALL_ARG_CASE('S', unsigned short, unsignedShortValue)
+                __UXY_CALL_ARG_CASE('i', int, intValue)
+                __UXY_CALL_ARG_CASE('I', unsigned int, unsignedIntValue)
+                __UXY_CALL_ARG_CASE('l', long, longValue)
+                __UXY_CALL_ARG_CASE('L', unsigned long, unsignedLongValue)
+                __UXY_CALL_ARG_CASE('q', long long, longLongValue)
+                __UXY_CALL_ARG_CASE('Q', unsigned long long, unsignedLongLongValue)
+                __UXY_CALL_ARG_CASE('f', float, floatValue)
+                __UXY_CALL_ARG_CASE('d', double, doubleValue)
+                __UXY_CALL_ARG_CASE('B', BOOL, boolValue)
+                
+            default:
+                if ([arg isKindOfClass:[NSNull class]])
+                {
+                    arg = [NSNull null];
+                    [invocation setArgument:&arg
+                                    atIndex:i + 2];
+                }
+                else
+                {
+                    [invocation setArgument:&arg
+                                    atIndex:i + 2];
+                }
+                break;
+        }
+    }
+    
+    [invocation invoke];
+    void *returnValue;
+    [invocation getReturnValue:&returnValue];
+    
+    return (__bridge id)returnValue;
 }
 
 #pragma mark - getter / setter

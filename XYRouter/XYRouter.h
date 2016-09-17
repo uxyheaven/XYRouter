@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 #undef  __XYROUTER_VERSION__
-#define __XYROUTER_VERSION__    "0.7.2" // 主版本号
+#define __XYROUTER_VERSION__    "0.7.3" // 主版本号
 
 
 #pragma mark - define
@@ -23,7 +23,7 @@ typedef enum
     // XYRouteURLType_push,                     // 在当前目录push               : 空
 }XYRouteType;
 
-typedef UIViewController *  (^XYRouterBlock)();
+typedef UIViewController * (^XYRouterBlock)();
 
 #pragma mark - protocol
 @class XYRouter;
@@ -43,6 +43,7 @@ typedef UIViewController *  (^XYRouterBlock)();
 
 @property (nonatomic, copy, readonly) NSString *currentPath;
 @property (nonatomic, strong) UIViewController *rootViewController;     // windows.rootViewController
+@property (nonatomic, strong, readonly) NSDictionary *map;      // 所有的vc映射关系
 
 @property (nonatomic, weak) id <XYRouterDelegate> delegate;
 
